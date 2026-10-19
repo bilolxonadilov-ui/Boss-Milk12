@@ -1,0 +1,2233 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boss Milk — Interaktiv Muzqaymoq Fabrikasi</title>
+  <meta name="description" content="Boss Milk — O'zbekistondagi eng mazali va tabiiy muzqaymoq fabrikasi. Muzqaymoq konstruktori, viktorina va onlayn buyurtma." />
+  <meta property="og:title" content="Boss Milk — Interaktiv Muzqaymoq Fabrikasi" />
+  <meta property="og:description" content="Muzqaymoq konstruktori, jonli qidiruv, qiziqarli test va tezkor yetkazib berish!" />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts: Fredoka & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome CDN Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Tailwind CSS CDN with custom config -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Fredoka', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              pink: '#FF4D8D',
+              pinkLight: '#FFF0F5',
+              cream: '#FFF9E6',
+              mint: '#10B981',
+              waffle: '#D97706',
+              purple: '#8B5CF6',
+              dark: '#0F172A',
+              darkCard: '#1E293B',
+            }
+          },
+          animation: {
+            'bounce-slow': 'bounce 2.5s infinite',
+            'pulse-fast': 'pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 3s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom scoop stacking aesthetics */
+    .scoop-shadow {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), inset 0 -6px 12px rgba(0, 0, 0, 0.15), inset 0 6px 12px rgba(255, 255, 255, 0.4);
+    }
+    .waffle-texture {
+      background: repeating-linear-gradient(45deg, #d97706, #d97706 8px, #b45309 8px, #b45309 16px);
+    }
+    /* Hide scrollbar for smooth horizontal pills */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+
+<body class="bg-amber-50/40 text-slate-800 dark:bg-slate-950 dark:text-slate-100 font-sans transition-colors duration-300 min-h-screen flex flex-col antialiased selection:bg-pink-500 selection:text-white">
+
+  <!-- ========================================================= -->
+  <!-- 0. LOADER ANIMATION (1.5s splash screen)                 -->
+  <!-- ========================================================= -->
+  <div id="loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white dark:bg-slate-950 transition-opacity duration-500">
+    <div class="relative flex flex-col items-center">
+      <!-- Animated Ice Cream Graphic -->
+      <div class="relative w-28 h-40 flex flex-col items-center justify-end">
+        <!-- Top Cherry -->
+        <div class="w-7 h-7 bg-red-500 rounded-full shadow-lg animate-bounce z-20 -mb-2 border-2 border-white dark:border-slate-800 relative">
+          <div class="absolute top-1 left-1 w-2 h-2 bg-white/70 rounded-full"></div>
+          <div class="absolute -top-3 right-1 w-3 h-3 border-r-2 border-t-2 border-amber-800 rounded-tr-lg"></div>
+        </div>
+        <!-- Scoops -->
+        <div class="w-16 h-14 bg-pink-400 rounded-full scoop-shadow z-10 -mb-3 transition-transform animate-pulse"></div>
+        <div class="w-20 h-16 bg-amber-200 rounded-full scoop-shadow z-0 -mb-3"></div>
+        <!-- Waffle Cone -->
+        <div class="w-0 h-0 border-l-[36px] border-l-transparent border-r-[36px] border-r-transparent border-t-[75px] border-t-amber-600 rounded-b-sm shadow-xl"></div>
+      </div>
+
+      <!-- Loading Text -->
+      <h2 id="loader-title" class="mt-6 text-2xl md:text-3xl font-display font-bold text-pink-600 dark:text-pink-400 tracking-wide animate-pulse">
+        Muzqaymoq tayyorlanmoqda...
+      </h2>
+      <p id="loader-sub" class="text-sm text-slate-500 dark:text-slate-400 mt-2 font-medium">
+        Tabiiy sut va eng shirin mevalar aralashtirilmoqda 🍦
+      </p>
+
+      <!-- Progress bar -->
+      <div class="w-64 h-2 bg-pink-100 dark:bg-slate-800 rounded-full mt-5 overflow-hidden shadow-inner">
+        <div id="loader-progress" class="h-full bg-gradient-to-r from-pink-500 via-amber-400 to-purple-500 w-0 transition-all duration-1000 ease-out rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- 1. NAVBAR (Header with Logo, Links, Lang, Theme, Burger) -->
+  <!-- ========================================================= -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-white/85 dark:bg-slate-900/85 border-b border-pink-100 dark:border-slate-800 transition-colors shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Brand Logo -->
+        <a href="#hero" onclick="playSound('click')" class="flex items-center gap-3 group">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-500 to-amber-400 flex items-center justify-center text-white shadow-md shadow-pink-500/20 group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-ice-cream text-2xl"></i>
+          </div>
+          <div>
+            <div class="font-display font-bold text-2xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
+              <span>Boss</span>
+              <span class="text-pink-500">Milk</span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-amber-400 text-amber-950 font-sans font-extrabold uppercase">100% Halol</span>
+            </div>
+            <p id="logo-sub" class="text-xs text-slate-500 dark:text-slate-400 font-medium">Muzqaymoq Fabrikasi</p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+          <a href="#hero" onclick="playSound('click')" class="nav-link px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-pink-500 dark:hover:text-pink-400 hover:bg-pink-50/50 dark:hover:bg-slate-800 transition-all" data-i18n="nav_home">Bosh sahifa</a>
+          <a href="#katalog" onclick="playSound('click')" class="nav-link px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-pink-500 dark:hover:text-pink-400 hover:bg-pink-50/50 dark:hover:bg-slate-800 transition-all" data-i18n="nav_catalog">Katalog</a>
+          <a href="#konstruktor" onclick="playSound('click')" class="nav-link px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-pink-500 dark:hover:text-pink-400 hover:bg-pink-50/50 dark:hover:bg-slate-800 transition-all flex items-center gap-1.5" data-i18n="nav_builder">
+            <i class="fa-solid fa-wand-magic-sparkles text-pink-500 text-xs"></i>
+            <span>Konstruktor</span>
+          </a>
+          <a href="#viktorina" onclick="playSound('click')" class="nav-link px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-pink-500 dark:hover:text-pink-400 hover:bg-pink-50/50 dark:hover:bg-slate-800 transition-all" data-i18n="nav_quiz">Viktorina</a>
+          <a href="#buyurtma" onclick="playSound('click')" class="nav-link px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-pink-500 dark:hover:text-pink-400 hover:bg-pink-50/50 dark:hover:bg-slate-800 transition-all" data-i18n="nav_order">Aloqa & Buyurtma</a>
+        </nav>
+
+        <!-- Header Actions: Sound, Lang, Theme & Mobile Burger -->
+        <div class="flex items-center gap-1.5 sm:gap-2.5">
+          
+          <!-- Sound Toggle (Desktop & Tablet) -->
+          <button id="sound-btn" onclick="toggleSound()" title="Ovozni yoqish/o'chirish" class="hidden sm:flex w-10 h-10 rounded-xl items-center justify-center bg-pink-100/70 hover:bg-pink-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-pink-600 dark:text-pink-400 transition-all shadow-sm">
+            <i id="sound-icon" class="fa-solid fa-volume-high text-sm"></i>
+          </button>
+
+          <!-- Language Switcher (UZ / EN) -->
+          <button id="lang-btn" onclick="toggleLanguage()" class="px-2.5 sm:px-3 py-1.5 rounded-xl flex items-center gap-1.5 bg-amber-100/80 hover:bg-amber-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-amber-900 dark:text-amber-300 font-bold text-xs transition-all shadow-sm">
+            <i class="fa-solid fa-globe text-amber-600 dark:text-amber-400 text-xs"></i>
+            <span id="current-lang-text">UZ</span>
+          </button>
+
+          <!-- Dark / Light Mode Toggle Button -->
+          <button id="theme-btn" onclick="toggleDarkMode()" title="Qorong'i/Yorug' rejim" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-300 transition-all shadow-sm">
+            <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+          </button>
+
+          <!-- Order CTA Button (Desktop) -->
+          <a href="#buyurtma" onclick="playSound('click')" class="hidden lg:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold text-sm shadow-md shadow-pink-500/25 hover:shadow-pink-500/40 hover:-translate-y-0.5 transition-all">
+            <i class="fa-solid fa-cart-shopping text-xs"></i>
+            <span data-i18n="btn_order_now">Buyurtma</span>
+          </a>
+
+          <!-- Mobile Hamburger Button (Uch chiziqli burger menu) -->
+          <button id="burger-btn" onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-xl flex items-center justify-center bg-pink-50 hover:bg-pink-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-pink-600 dark:text-pink-400 focus:outline-none transition-all shadow-sm border border-pink-100 dark:border-slate-700" aria-label="Menu">
+            <div class="w-5 h-4 flex flex-col justify-between items-center relative">
+              <span id="burger-bar-1" class="w-5 h-0.5 bg-current rounded-full transition-all duration-300 transform origin-left"></span>
+              <span id="burger-bar-2" class="w-5 h-0.5 bg-current rounded-full transition-all duration-300"></span>
+              <span id="burger-bar-3" class="w-5 h-0.5 bg-current rounded-full transition-all duration-300 transform origin-left"></span>
+            </div>
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-pink-100 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg px-4 pt-3 pb-6 transition-all duration-300 shadow-xl">
+      <div class="flex flex-col gap-2">
+        <a href="#hero" onclick="closeMobileMenu(); playSound('click')" class="px-4 py-3 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-100 hover:bg-pink-50 dark:hover:bg-slate-800 flex items-center gap-3" data-i18n="nav_home">
+          <i class="fa-solid fa-house text-pink-500"></i> Bosh sahifa
+        </a>
+        <a href="#katalog" onclick="closeMobileMenu(); playSound('click')" class="px-4 py-3 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-100 hover:bg-pink-50 dark:hover:bg-slate-800 flex items-center gap-3" data-i18n="nav_catalog">
+          <i class="fa-solid fa-ice-cream text-pink-500"></i> Katalog
+        </a>
+        <a href="#konstruktor" onclick="closeMobileMenu(); playSound('click')" class="px-4 py-3 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-100 hover:bg-pink-50 dark:hover:bg-slate-800 flex items-center gap-3" data-i18n="nav_builder">
+          <i class="fa-solid fa-wand-magic-sparkles text-pink-500"></i> Konstruktor
+        </a>
+        <a href="#viktorina" onclick="closeMobileMenu(); playSound('click')" class="px-4 py-3 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-100 hover:bg-pink-50 dark:hover:bg-slate-800 flex items-center gap-3" data-i18n="nav_quiz">
+          <i class="fa-solid fa-circle-question text-pink-500"></i> Viktorina
+        </a>
+        <a href="#buyurtma" onclick="closeMobileMenu(); playSound('click')" class="px-4 py-3 rounded-xl text-base font-semibold text-slate-800 dark:text-slate-100 hover:bg-pink-50 dark:hover:bg-slate-800 flex items-center gap-3" data-i18n="nav_order">
+          <i class="fa-solid fa-phone text-pink-500"></i> Aloqa & Buyurtma
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================= -->
+  <!-- 2. HERO SECTION (Bosh sahifa)                             -->
+  <!-- ========================================================= -->
+  <section id="hero" class="relative pt-8 pb-16 md:pt-14 md:pb-24 overflow-hidden">
+    <!-- Decorative colorful background blurs -->
+    <div class="absolute -top-16 -left-16 w-80 h-80 bg-pink-300/30 dark:bg-pink-900/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 -right-16 w-96 h-96 bg-amber-300/25 dark:bg-amber-900/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 left-1/3 w-72 h-72 bg-purple-300/20 dark:bg-purple-900/15 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left Column: Copy & CTAs -->
+        <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+          
+          <!-- Badge -->
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink-100 dark:bg-pink-950/60 border border-pink-200 dark:border-pink-800 text-pink-700 dark:text-pink-300 text-xs sm:text-sm font-bold shadow-sm">
+            <span class="flex h-2 w-2 rounded-full bg-pink-500 animate-ping"></span>
+            <i class="fa-solid fa-crown text-amber-500"></i>
+            <span data-i18n="hero_badge">100% Tabiiy Sut & Belgiya Shokoladi</span>
+          </div>
+
+          <!-- Main Title -->
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
+            <span data-i18n="hero_title_1">Har bir qoshiqda</span><br/>
+            <span class="bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 bg-clip-text text-transparent" data-i18n="hero_title_2">haqiqiy baxt & lazzat!</span>
+          </h1>
+
+          <!-- Description -->
+          <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal" data-i18n="hero_desc">
+            Boss Milk fabrikasining muzqaymoqlari tabiiy qaymoq va sarxil mevalardan mehr bilan tayyorlanadi. O'z muzqaymoq retseptingizni yarating yoki tayyor durdonalardan buyurtma bering!
+          </p>
+
+          <!-- Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            <a href="#konstruktor" onclick="playSound('click')" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold text-base shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span data-i18n="hero_btn_builder">Muzqaymoq Yaratish</span>
+            </a>
+            <a href="#katalog" onclick="playSound('click')" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 font-bold text-base shadow-sm hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-magnifying-glass text-pink-500"></i>
+              <span data-i18n="hero_btn_catalog">Katalogni Ko'rish</span>
+            </a>
+          </div>
+
+          <!-- Feature Highlights / Stats Bar -->
+          <div class="grid grid-cols-3 gap-3 pt-6 border-t border-pink-100 dark:border-slate-800 max-w-lg mx-auto lg:mx-0">
+            <div class="text-center lg:text-left">
+              <div class="font-display font-bold text-2xl sm:text-3xl text-pink-600 dark:text-pink-400">24+</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="hero_stat_flavors">Noyob Ta'mlar</div>
+            </div>
+            <div class="text-center lg:text-left">
+              <div class="font-display font-bold text-2xl sm:text-3xl text-amber-500">100%</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="hero_stat_milk">Tabiiy Mahsulot</div>
+            </div>
+            <div class="text-center lg:text-left">
+              <div class="font-display font-bold text-2xl sm:text-3xl text-emerald-500">30 min</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="hero_stat_delivery">Tezkor Yetkazish</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Appetizing Visual Composition -->
+        <div class="lg:col-span-5 flex justify-center relative">
+          
+          <!-- Main Hero Ice Cream Card -->
+          <div class="relative w-full max-w-sm sm:max-w-md bg-gradient-to-b from-pink-100/70 via-white to-amber-100/60 dark:from-slate-800 dark:via-slate-800/90 dark:to-slate-900 rounded-3xl p-6 sm:p-8 shadow-2xl border border-pink-200/60 dark:border-slate-700 hover:shadow-pink-500/10 transition-all">
+            
+            <!-- Floating Badge 1: Rating -->
+            <div class="absolute -top-4 -left-3 sm:-left-6 bg-white dark:bg-slate-800 rounded-2xl px-4 py-2.5 shadow-xl border border-pink-100 dark:border-slate-700 flex items-center gap-2 animate-float">
+              <div class="w-8 h-8 rounded-full bg-amber-400 flex items-center justify-center text-white">
+                <i class="fa-solid fa-star text-xs"></i>
+              </div>
+              <div>
+                <div class="text-xs font-bold text-slate-800 dark:text-white">4.9 / 5.0</div>
+                <div class="text-[10px] text-slate-400" data-i18n="hero_badge_rating">15,000+ Baholar</div>
+              </div>
+            </div>
+
+            <!-- Floating Badge 2: Halal & Fresh -->
+            <div class="absolute -bottom-4 -right-3 sm:-right-6 bg-white dark:bg-slate-800 rounded-2xl px-4 py-2.5 shadow-xl border border-pink-100 dark:border-slate-700 flex items-center gap-2 animate-float" style="animation-delay: 1.5s;">
+              <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white">
+                <i class="fa-solid fa-leaf text-xs"></i>
+              </div>
+              <div>
+                <div class="text-xs font-bold text-slate-800 dark:text-white" data-i18n="hero_badge_fresh">Fermer Suti</div>
+                <div class="text-[10px] text-emerald-600 font-semibold" data-i18n="hero_badge_guarantee">100% Kafolat</div>
+              </div>
+            </div>
+
+            <!-- Hero Ice Cream Image / Visual Showcase Container -->
+            <div class="relative w-full h-80 sm:h-96 rounded-2xl overflow-hidden group bg-gradient-to-tr from-pink-500 via-rose-400 to-amber-300 flex flex-col items-center justify-center p-6 shadow-inner">
+              
+              <!-- Background subtle circles -->
+              <div class="absolute inset-0 bg-white/10 backdrop-blur-[1px]"></div>
+              
+              <!-- Luscious Visual Ice Cream Tower -->
+              <div class="relative z-10 flex flex-col items-center group-hover:scale-105 transition-transform duration-500">
+                <!-- Top Cherry with Gloss -->
+                <div class="w-9 h-9 bg-red-600 rounded-full shadow-lg z-30 -mb-2 relative border-2 border-white/60">
+                  <div class="absolute top-1.5 left-1.5 w-2.5 h-2.5 bg-white/80 rounded-full"></div>
+                  <div class="absolute -top-4 right-1 w-4 h-4 border-r-2 border-t-2 border-amber-900 rounded-tr-xl"></div>
+                </div>
+
+                <!-- Drizzle & Sprinkles Tag -->
+                <div class="absolute -top-3 -right-8 z-30 bg-amber-400 text-amber-950 text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-md animate-bounce">
+                  ✨ Belgiya Shokoladi
+                </div>
+
+                <!-- Scoop 1 (Berry Pink) -->
+                <div class="w-24 h-18 rounded-full bg-gradient-to-br from-pink-400 to-rose-500 scoop-shadow z-20 -mb-4 flex items-center justify-center shadow-lg relative overflow-hidden">
+                  <div class="absolute top-1 left-3 w-5 h-2 bg-white/40 rounded-full blur-[1px]"></div>
+                  <div class="w-full h-3 bg-amber-950/20 absolute bottom-0 rounded-full blur-[1px]"></div>
+                </div>
+
+                <!-- Scoop 2 (Pistachio Green) -->
+                <div class="w-28 h-20 rounded-full bg-gradient-to-br from-emerald-300 to-emerald-500 scoop-shadow z-10 -mb-4 flex items-center justify-center shadow-lg relative overflow-hidden">
+                  <div class="absolute top-1.5 left-4 w-6 h-2 bg-white/50 rounded-full blur-[1px]"></div>
+                </div>
+
+                <!-- Scoop 3 (Rich Cream Plombir) -->
+                <div class="w-32 h-22 rounded-full bg-gradient-to-br from-amber-100 to-amber-200 scoop-shadow z-0 -mb-4 flex items-center justify-center shadow-xl relative overflow-hidden">
+                  <div class="absolute top-2 left-5 w-7 h-2.5 bg-white/70 rounded-full blur-[1px]"></div>
+                </div>
+
+                <!-- Crispy Golden Waffle Cone -->
+                <div class="w-0 h-0 border-l-[52px] border-l-transparent border-r-[52px] border-r-transparent border-t-[115px] border-t-amber-600 rounded-b-sm shadow-2xl relative">
+                  <!-- Waffle grid lines -->
+                  <div class="absolute -top-[110px] -left-10 text-[9px] text-amber-900/40 font-mono tracking-widest pointer-events-none select-none">
+                    # # # # # # #
+                  </div>
+                </div>
+              </div>
+
+              <!-- Overlay Card Label -->
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/85 via-slate-900/60 to-transparent p-5 text-white z-20">
+                <span class="px-2.5 py-0.5 rounded-lg bg-pink-500 text-[10px] font-bold uppercase tracking-wider shadow">Xit Retsept</span>
+                <h3 class="text-lg font-bold font-display mt-1">Boss Grand Pistachio & Berry</h3>
+                <p class="text-xs text-white/80" data-i18n="hero_dessert_sub">Tabiiy qaymoq, sarxil malina va qarsildoq vafli</p>
+              </div>
+            </div>
+
+            <!-- Fast Action Banner inside Hero -->
+            <div class="mt-4 flex items-center justify-between bg-white/70 dark:bg-slate-700/60 p-3 rounded-2xl backdrop-blur-sm">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">🍦</span>
+                <span class="text-xs font-semibold text-slate-700 dark:text-slate-200" data-i18n="hero_cta_sub">Bugun 500+ buyurtma berildi</span>
+              </div>
+              <a href="#katalog" class="text-xs font-bold text-pink-600 dark:text-pink-400 hover:underline flex items-center gap-1">
+                <span data-i18n="hero_view_all">Ko'rish</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 3. KATALOG SECTION (Jonli qidiruv va kartochkalar)        -->
+  <!-- ========================================================= -->
+  <section id="katalog" class="py-16 md:py-24 bg-white/60 dark:bg-slate-900/50 border-y border-pink-100/60 dark:border-slate-800 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <span class="px-3.5 py-1.5 rounded-full bg-pink-100 dark:bg-pink-950 text-pink-600 dark:text-pink-400 text-xs font-extrabold uppercase tracking-wider" data-i18n="cat_pill">Muzqaymoqlar Menyusi</span>
+        <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white" data-i18n="cat_title">
+          Har bir ta'b uchun shohona lazzatlar
+        </h2>
+        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base" data-i18n="cat_subtitle">
+          Bizning mashhur muzqaymoqlarimiz ro'yxati. Nomini yozib qidiring yoki kategoriya bo'yicha saralang!
+        </p>
+      </div>
+
+      <!-- FUNCTION 2: LIVE SEARCH & CATEGORY FILTERS -->
+      <div class="mt-10 max-w-4xl mx-auto space-y-5">
+        
+        <!-- Live Search Input -->
+        <div class="relative max-w-xl mx-auto">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-pink-500">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+          <input 
+            type="text" 
+            id="catalog-search" 
+            placeholder="Muzqaymoq nomini yozing (masalan: Plombir, Shokolad, Mango)..."
+            data-i18n-ph="search_placeholder"
+            oninput="handleLiveSearch()"
+            class="w-full pl-11 pr-24 py-3.5 rounded-2xl bg-white dark:bg-slate-800 border-2 border-pink-100 dark:border-slate-700 focus:border-pink-500 dark:focus:border-pink-500 focus:outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm sm:text-base shadow-sm transition-all"
+          />
+          <button 
+            id="clear-search-btn" 
+            onclick="clearSearch()" 
+            class="hidden absolute inset-y-0 right-3 my-auto h-8 px-2.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-xs text-slate-600 dark:text-slate-300 hover:bg-pink-100 hover:text-pink-600 transition-all items-center gap-1">
+            <i class="fa-solid fa-xmark"></i> <span data-i18n="btn_clear">Tozalash</span>
+          </button>
+        </div>
+
+        <!-- Category Pills -->
+        <div class="flex items-center justify-center gap-2 overflow-x-auto no-scrollbar pb-2">
+          <button onclick="setCategoryFilter('all', this)" class="cat-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-pink-500 text-white shadow-md shadow-pink-500/20 transition-all" data-category="all" data-i18n="cat_filter_all">Barchasi</button>
+          <button onclick="setCategoryFilter('waffle', this)" class="cat-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-pink-400 transition-all" data-category="waffle" data-i18n="cat_filter_waffle">Vafli Konuslar</button>
+          <button onclick="setCategoryFilter('popsicle', this)" class="cat-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-pink-400 transition-all" data-category="popsicle" data-i18n="cat_filter_popsicle">Eskimo Muzqaymoqlar</button>
+          <button onclick="setCategoryFilter('tub', this)" class="cat-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-pink-400 transition-all" data-category="tub" data-i18n="cat_filter_tub">Oila Paqirchalari</button>
+          <button onclick="setCategoryFilter('premium', this)" class="cat-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-pink-400 transition-all" data-category="premium" data-i18n="cat_filter_premium">Maxsus & Premium</button>
+        </div>
+
+        <!-- Search Status / Counter -->
+        <div class="text-center text-xs font-semibold text-slate-500 dark:text-slate-400">
+          <span data-i18n="cat_found">Mavjud mahsulotlar:</span> <span id="catalog-count" class="text-pink-600 dark:text-pink-400 font-bold">8</span>
+        </div>
+
+      </div>
+
+      <!-- Catalog Cards Grid -->
+      <div id="catalog-grid" class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+
+      <!-- Empty State when search returns 0 results -->
+      <div id="catalog-empty" class="hidden text-center py-16 space-y-4">
+        <div class="w-20 h-20 mx-auto rounded-full bg-pink-100 dark:bg-slate-800 flex items-center justify-center text-4xl text-pink-500">
+          🍦
+        </div>
+        <h3 class="text-xl font-bold font-display text-slate-800 dark:text-slate-100" data-i18n="cat_empty_title">Hech narsa topilmadi</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto" data-i18n="cat_empty_desc">Qidiruv so'zini boshqacharoq yozib ko'ring yoki barcha mahsulotlarni ko'ring.</p>
+        <button onclick="clearSearch()" class="px-5 py-2.5 rounded-xl bg-pink-500 hover:bg-pink-600 text-white font-bold text-xs shadow-md transition-all" data-i18n="cat_empty_btn">
+          Qidiruvni tozalash
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 4. MUZQAYMOQ KONSTRUKTORI (Kalkulyator & Live Preview)     -->
+  <!-- ========================================================= -->
+  <section id="konstruktor" class="py-16 md:py-24 relative overflow-hidden">
+    <!-- Background glow -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-full max-w-5xl h-96 bg-gradient-to-r from-pink-200/40 via-amber-200/30 to-purple-200/40 dark:from-pink-900/10 dark:via-amber-900/10 dark:to-purple-900/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- Section Title -->
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <span class="px-3.5 py-1.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-xs font-extrabold uppercase tracking-wider" data-i18n="calc_pill">Interaktiv Konstruktor</span>
+        <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white" data-i18n="calc_title">
+          O'zingizning orzuingizdagi muzqaymoqni yarating!
+        </h2>
+        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base" data-i18n="calc_subtitle">
+          Idish turini, sevimli sharchalarni va o'zgacha souslarni tanlang. Narx avtomatik real vaqtda hisoblanadi.
+        </p>
+      </div>
+
+      <!-- Main Constructor Interface (2 Columns) -->
+      <div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Column: Visual Live Ice Cream Graphic & Price HUD -->
+        <div class="lg:col-span-5 bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-xl border border-pink-100 dark:border-slate-800 sticky top-28">
+          
+          <div class="flex items-center justify-between pb-4 border-b border-pink-100 dark:border-slate-800">
+            <h3 class="font-display font-bold text-lg text-slate-800 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-eye text-pink-500"></i>
+              <span data-i18n="calc_preview_title">Jonli Ko'rinish</span>
+            </h3>
+            <span id="preview-scoop-count" class="text-xs px-2.5 py-1 rounded-full bg-pink-100 dark:bg-slate-800 text-pink-600 dark:text-pink-400 font-bold">
+              1 ta sharcha
+            </span>
+          </div>
+
+          <!-- Interactive Graphic Canvas -->
+          <div class="py-8 flex flex-col items-center justify-center relative min-h-[340px]">
+            
+            <!-- Floating Topping Sprinkles Visual Effect -->
+            <div id="topping-visual-sprinkles" class="absolute top-6 flex gap-2 transition-opacity duration-300 opacity-0 z-30">
+              <span class="text-xl animate-bounce">✨</span>
+              <span class="text-xl animate-bounce" style="animation-delay: 0.2s">🍓</span>
+              <span class="text-xl animate-bounce" style="animation-delay: 0.4s">🍫</span>
+            </div>
+
+            <!-- Dynamic Ice Cream Scoops Visual Stack -->
+            <div class="relative flex flex-col items-center justify-end w-48">
+              
+              <!-- Scoop 3 (Top - if selected) -->
+              <div id="scoop-slot-3" class="w-20 h-16 rounded-full scoop-shadow z-20 -mb-4 transition-all duration-300 transform scale-0 hidden items-center justify-center text-xs font-bold text-slate-800/80 shadow-md">
+              </div>
+
+              <!-- Scoop 2 (Middle - if selected) -->
+              <div id="scoop-slot-2" class="w-24 h-18 rounded-full scoop-shadow z-10 -mb-4 transition-all duration-300 transform scale-0 hidden items-center justify-center text-xs font-bold text-slate-800/80 shadow-md">
+              </div>
+
+              <!-- Scoop 1 (Bottom - always at least one) -->
+              <div id="scoop-slot-1" class="w-28 h-20 rounded-full scoop-shadow z-0 -mb-4 transition-all duration-300 transform scale-100 flex items-center justify-center text-xs font-bold text-slate-800/80 shadow-md bg-[#FFF6D6]">
+                <span id="scoop-name-1" class="px-2 text-center text-[11px] font-bold text-slate-700">Qaymoqli Plombir</span>
+              </div>
+
+              <!-- Base Cone / Cup Graphic -->
+              <div id="cone-visual" class="transition-all duration-300 z-0">
+                <!-- Classic Waffle Cone by default -->
+                <div class="w-0 h-0 border-l-[45px] border-l-transparent border-r-[45px] border-r-transparent border-t-[95px] border-t-amber-600 rounded-b-sm shadow-xl"></div>
+              </div>
+
+            </div>
+
+            <!-- Live Selected Recipe Name Tags -->
+            <div id="selected-recipe-badge" class="mt-6 text-center">
+              <div id="cone-selected-name" class="text-xs font-bold text-amber-700 dark:text-amber-400">Qarsildoq vafli konusi</div>
+              <div id="flavors-selected-summary" class="text-xs text-slate-500 dark:text-slate-400 mt-1">1x Qaymoqli Plombir</div>
+              <div id="toppings-selected-summary" class="text-[11px] text-pink-500 font-semibold mt-0.5">Sous tanlanmagan</div>
+            </div>
+
+          </div>
+
+          <!-- Total Price HUD & Quick Action -->
+          <div class="pt-4 border-t border-pink-100 dark:border-slate-800 bg-pink-50/60 dark:bg-slate-800/60 -mx-6 -mb-6 p-6 rounded-b-3xl">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wide" data-i18n="calc_total_label">Jami Narx:</span>
+              <div class="text-right">
+                <span id="calc-total-price" class="text-2xl sm:text-3xl font-display font-extrabold text-pink-600 dark:text-pink-400">13,000</span>
+                <span class="text-xs font-bold text-slate-500 dark:text-slate-400">UZS</span>
+              </div>
+            </div>
+            
+            <button onclick="orderCustomIceCream()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold text-sm shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-basket-shopping"></i>
+              <span data-i18n="calc_btn_add">Ushbu retseptni buyurtma qilish</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Step-by-Step Selectors (Idish, Sharchalar, Souslar) -->
+        <div class="lg:col-span-7 space-y-8">
+          
+          <!-- STEP 1: CONE / CUP SELECTOR -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 shadow-md border border-pink-100 dark:border-slate-800 space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-xl bg-pink-500 text-white text-xs font-bold flex items-center justify-center">1</span>
+                <h4 class="font-display font-bold text-base text-slate-900 dark:text-white" data-i18n="calc_step1_title">Idish turini tanlang</h4>
+              </div>
+              <span class="text-xs text-slate-400" data-i18n="calc_required">Majburiy</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <!-- Cone Option 1 -->
+              <button onclick="selectCone('waffle-classic', 4000, 'Qarsildoq vafli konusi', 'Crispy Waffle Cone', this)" class="cone-card p-3 rounded-2xl border-2 border-pink-500 bg-pink-50/50 dark:bg-pink-950/30 text-left transition-all active:scale-95" data-cone="waffle-classic">
+                <div class="text-2xl mb-1">🍦</div>
+                <div class="text-xs font-bold text-slate-800 dark:text-white cone-name" data-i18n="cone_waffle">Vafli konusi</div>
+                <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold mt-1">+4,000 UZS</div>
+              </button>
+
+              <!-- Cone Option 2 -->
+              <button onclick="selectCone('choco-cone', 6000, 'Shokoladli konus kunjutli', 'Chocolate Glazed Cone', this)" class="cone-card p-3 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-left transition-all active:scale-95 hover:border-pink-300" data-cone="choco-cone">
+                <div class="text-2xl mb-1">🍫</div>
+                <div class="text-xs font-bold text-slate-800 dark:text-white cone-name" data-i18n="cone_choco">Shokoladli konus</div>
+                <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold mt-1">+6,000 UZS</div>
+              </button>
+
+              <!-- Cone Option 3 -->
+              <button onclick="selectCone('sugar-cone', 3000, 'Shirin mini-konus', 'Sugar Cone', this)" class="cone-card p-3 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-left transition-all active:scale-95 hover:border-pink-300" data-cone="sugar-cone">
+                <div class="text-2xl mb-1">🧇</div>
+                <div class="text-xs font-bold text-slate-800 dark:text-white cone-name" data-i18n="cone_sugar">Mini konus</div>
+                <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold mt-1">+3,000 UZS</div>
+              </button>
+
+              <!-- Cone Option 4 -->
+              <button onclick="selectCone('eco-cup', 2000, 'Qoshiqli eko-stakancha', 'Eco Craft Cup', this)" class="cone-card p-3 rounded-2xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-left transition-all active:scale-95 hover:border-pink-300" data-cone="eco-cup">
+                <div class="text-2xl mb-1">🍨</div>
+                <div class="text-xs font-bold text-slate-800 dark:text-white cone-name" data-i18n="cone_cup">Eko stakan</div>
+                <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold mt-1">+2,000 UZS</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 2: ICE CREAM SCOOPS (Up to 3) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 shadow-md border border-pink-100 dark:border-slate-800 space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-xl bg-pink-500 text-white text-xs font-bold flex items-center justify-center">2</span>
+                <h4 class="font-display font-bold text-base text-slate-900 dark:text-white" data-i18n="calc_step2_title">Muzqaymoq sharchalarini tanlang</h4>
+              </div>
+              <span class="text-xs font-semibold text-pink-600 dark:text-pink-400" data-i18n="calc_max_scoops">1 dan 3 tagacha</span>
+            </div>
+
+            <!-- Flavors Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              
+              <!-- Flavor 1 -->
+              <button onclick="addScoop('vanilla-milk', 9000, 'Qaymoqli Plombir', 'Creamy Vanilla', '#FFF6D6')" class="p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-amber-400 text-left transition-all active:scale-95 flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-full border border-black/10 flex-shrink-0" style="background-color: #FFF6D6;"></div>
+                <div class="overflow-hidden">
+                  <div class="text-xs font-bold text-slate-800 dark:text-white truncate" data-i18n="flavor_vanilla">Qaymoqli Plombir</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+9,000 UZS</div>
+                </div>
+              </button>
+
+              <!-- Flavor 2 -->
+              <button onclick="addScoop('belgian-choco', 11000, 'Belgiya Qora Shokoladi', 'Belgian Chocolate', '#5C3826')" class="p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-amber-400 text-left transition-all active:scale-95 flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-full border border-black/10 flex-shrink-0" style="background-color: #5C3826;"></div>
+                <div class="overflow-hidden">
+                  <div class="text-xs font-bold text-slate-800 dark:text-white truncate" data-i18n="flavor_choco">Qora Shokolad</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+11,000 UZS</div>
+                </div>
+              </button>
+
+              <!-- Flavor 3 -->
+              <button onclick="addScoop('pistachio-creme', 12000, 'Zumrad Pista Kremi', 'Emerald Pistachio', '#A9D39E')" class="p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-amber-400 text-left transition-all active:scale-95 flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-full border border-black/10 flex-shrink-0" style="background-color: #A9D39E;"></div>
+                <div class="overflow-hidden">
+                  <div class="text-xs font-bold text-slate-800 dark:text-white truncate" data-i18n="flavor_pistachio">Pista Kremi</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+12,000 UZS</div>
+                </div>
+              </button>
+
+              <!-- Flavor 4 -->
+              <button onclick="addScoop('wild-strawberry', 10000, 'O\'rmon Qulupnayi & Yogurt', 'Wild Strawberry', '#FF7597')" class="p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-amber-400 text-left transition-all active:scale-95 flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-full border border-black/10 flex-shrink-0" style="background-color: #FF7597;"></div>
+                <div class="overflow-hidden">
+                  <div class="text-xs font-bold text-slate-800 dark:text-white truncate" data-i18n="flavor_strawberry">O'rmon Qulupnayi</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+10,000 UZS</div>
+                </div>
+              </button>
+
+              <!-- Flavor 5 -->
+              <button onclick="addScoop('mango-passion', 10000, 'Quyoshli Mango-Marakuya', 'Mango Passionfruit', '#FFAE34')" class="p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-amber-400 text-left transition-all active:scale-95 flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-full border border-black/10 flex-shrink-0" style="background-color: #FFAE34;"></div>
+                <div class="overflow-hidden">
+                  <div class="text-xs font-bold text-slate-800 dark:text-white truncate" data-i18n="flavor_mango">Mango-Marakuya</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+10,000 UZS</div>
+                </div>
+              </button>
+
+              <!-- Flavor 6 -->
+              <button onclick="addScoop('lavender-blueberry', 11000, 'Tog\' Qorag\'ati & Lavanda', 'Lavender Blueberry', '#9B72CF')" class="p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-amber-400 text-left transition-all active:scale-95 flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded-full border border-black/10 flex-shrink-0" style="background-color: #9B72CF;"></div>
+                <div class="overflow-hidden">
+                  <div class="text-xs font-bold text-slate-800 dark:text-white truncate" data-i18n="flavor_blueberry">Qorag'at & Lavanda</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+11,000 UZS</div>
+                </div>
+              </button>
+
+            </div>
+
+            <!-- Selected Scoops Chips (with remove option) -->
+            <div class="pt-2">
+              <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2" data-i18n="calc_selected_scoops">Tanlangan sharchalar:</div>
+              <div id="selected-scoops-list" class="flex flex-wrap gap-2">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+          </div>
+
+          <!-- STEP 3: TOPPINGS & DRIZZLES (Checkboxes / Multi-select) -->
+          <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-7 shadow-md border border-pink-100 dark:border-slate-800 space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-7 h-7 rounded-xl bg-pink-500 text-white text-xs font-bold flex items-center justify-center">3</span>
+                <h4 class="font-display font-bold text-base text-slate-900 dark:text-white" data-i18n="calc_step3_title">Souslar va qo'shimchalarni tanlang</h4>
+              </div>
+              <span class="text-xs text-slate-400" data-i18n="calc_optional">Ixtiyoriy</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              
+              <!-- Topping 1 -->
+              <label class="topping-label p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-pink-300 flex items-start gap-2.5 cursor-pointer transition-all">
+                <input type="checkbox" onchange="toggleTopping('sprinkles', 3000, 'Kamalak sepmasi', this)" class="mt-1 accent-pink-500 rounded">
+                <div>
+                  <div class="text-xs font-bold text-slate-800 dark:text-white" data-i18n="top_sprinkles">Kamalak sepmasi</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+3,000 UZS</div>
+                </div>
+              </label>
+
+              <!-- Topping 2 -->
+              <label class="topping-label p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-pink-300 flex items-start gap-2.5 cursor-pointer transition-all">
+                <input type="checkbox" onchange="toggleTopping('choco-fudge', 4000, 'Issiq shokolad sirkasi', this)" class="mt-1 accent-pink-500 rounded">
+                <div>
+                  <div class="text-xs font-bold text-slate-800 dark:text-white" data-i18n="top_fudge">Shokolad sousi</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+4,000 UZS</div>
+                </div>
+              </label>
+
+              <!-- Topping 3 -->
+              <label class="topping-label p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-pink-300 flex items-start gap-2.5 cursor-pointer transition-all">
+                <input type="checkbox" onchange="toggleTopping('salted-caramel', 4000, 'Tuzli karamel', this)" class="mt-1 accent-pink-500 rounded">
+                <div>
+                  <div class="text-xs font-bold text-slate-800 dark:text-white" data-i18n="top_caramel">Tuzli karamel</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+4,000 UZS</div>
+                </div>
+              </label>
+
+              <!-- Topping 4 -->
+              <label class="topping-label p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-pink-300 flex items-start gap-2.5 cursor-pointer transition-all">
+                <input type="checkbox" onchange="toggleTopping('pistachio-nuts', 5000, 'Maydalangan pista', this)" class="mt-1 accent-pink-500 rounded">
+                <div>
+                  <div class="text-xs font-bold text-slate-800 dark:text-white" data-i18n="top_nuts">Maydalangan pista</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+5,000 UZS</div>
+                </div>
+              </label>
+
+              <!-- Topping 5 -->
+              <label class="topping-label p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-pink-300 flex items-start gap-2.5 cursor-pointer transition-all">
+                <input type="checkbox" onchange="toggleTopping('marshmallows', 3000, 'Mini-marshmellou', this)" class="mt-1 accent-pink-500 rounded">
+                <div>
+                  <div class="text-xs font-bold text-slate-800 dark:text-white" data-i18n="top_marshmallow">Mini marshmellou</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+3,000 UZS</div>
+                </div>
+              </label>
+
+              <!-- Topping 6 -->
+              <label class="topping-label p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-pink-300 flex items-start gap-2.5 cursor-pointer transition-all">
+                <input type="checkbox" onchange="toggleTopping('fresh-berries', 6000, 'Yangi malina mevalari', this)" class="mt-1 accent-pink-500 rounded">
+                <div>
+                  <div class="text-xs font-bold text-slate-800 dark:text-white" data-i18n="top_berries">Yangi rezavorlar</div>
+                  <div class="text-[11px] text-pink-600 dark:text-pink-400 font-bold">+6,000 UZS</div>
+                </div>
+              </label>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 5. VIKTORINA: "Qaysi muzqaymoq ma'qul?" (3 Savolli Test)  -->
+  <!-- ========================================================= -->
+  <section id="viktorina" class="py-16 md:py-24 bg-white/60 dark:bg-slate-900/50 border-y border-pink-100/60 dark:border-slate-800 transition-colors">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-3">
+        <span class="px-3.5 py-1.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 text-xs font-extrabold uppercase tracking-wider" data-i18n="quiz_pill">Qiziqarli Test</span>
+        <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white" data-i18n="quiz_title">
+          Qaysi muzqaymoq ta'mi sizning xarakteringizga mos?
+        </h2>
+        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base max-w-xl mx-auto" data-i18n="quiz_subtitle">
+          3 ta oddiy savolga javob bering va o'zingizning ideal ta'mingizni bilib oling!
+        </p>
+      </div>
+
+      <!-- Quiz Box Card -->
+      <div class="mt-10 bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 shadow-xl border border-pink-100 dark:border-slate-800">
+        
+        <!-- Quiz Ongoing View -->
+        <div id="quiz-question-box" class="space-y-6">
+          
+          <!-- Progress Bar & Step -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
+              <span id="quiz-step-text">Savol 1 / 3</span>
+              <span id="quiz-points-text">Ball: 0</span>
+            </div>
+            <div class="w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+              <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-pink-500 w-1/3 transition-all duration-300 rounded-full"></div>
+            </div>
+          </div>
+
+          <!-- Question Heading -->
+          <h3 id="quiz-question-title" class="text-xl sm:text-2xl font-display font-bold text-slate-900 dark:text-white pt-2">
+            1. Dam olish kuningizni qanday o'tkazishni yoqtirasiz?
+          </h3>
+
+          <!-- Options Grid -->
+          <div id="quiz-options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+            <!-- Dynamically populated via JS -->
+          </div>
+
+        </div>
+
+        <!-- Quiz Result Box (Hidden initially) -->
+        <div id="quiz-result-box" class="hidden text-center py-6 space-y-6">
+          
+          <div class="relative inline-block">
+            <div id="quiz-result-emoji" class="text-6xl sm:text-7xl animate-bounce-slow">🍦</div>
+            <div class="absolute -top-2 -right-2 text-2xl">✨</div>
+          </div>
+
+          <div>
+            <span class="px-3.5 py-1.5 rounded-full bg-pink-100 dark:bg-pink-950 text-pink-600 dark:text-pink-400 text-xs font-bold uppercase" data-i18n="quiz_result_badge">Sizning ideal ta'mingiz:</span>
+            <h3 id="quiz-result-name" class="text-2xl sm:text-3xl font-display font-extrabold text-slate-900 dark:text-white mt-3">
+              Klassik Qaymoqli Plombir
+            </h3>
+            <p id="quiz-result-desc" class="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-lg mx-auto mt-2 leading-relaxed">
+              Siz qulaylik, ishonchlilik va vaqt sinovidan o'tgan go'zal an'analarni qadrlaysiz. Har qanday davra yuragisiz!
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-pink-50 dark:bg-slate-800 max-w-sm mx-auto flex items-center justify-between border border-pink-100 dark:border-slate-700">
+            <span class="text-xs font-bold text-slate-600 dark:text-slate-300" data-i18n="quiz_total_score">To'plangan ball:</span>
+            <span id="quiz-final-score" class="font-display font-extrabold text-lg text-pink-600 dark:text-pink-400">10 / 12</span>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <button onclick="applyQuizResultToBuilder()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-pink-500 hover:bg-pink-600 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span data-i18n="quiz_btn_builder">Ushbu ta'mni konstruktorda ko'rish</span>
+            </button>
+            <button onclick="restartQuiz()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-sm transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span data-i18n="quiz_btn_retry">Qayta topshirish</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 6. ALOQA VA BUYURTMA FORMASI (Valitatsiya & Modal)        -->
+  <!-- ========================================================= -->
+  <section id="buyurtma" class="py-16 md:py-24 relative overflow-hidden">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-3">
+        <span class="px-3.5 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-xs font-extrabold uppercase tracking-wider" data-i18n="order_pill">Tezkor Yetkazib Berish</span>
+        <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-slate-900 dark:text-white" data-i18n="order_title">
+          Muzdek lazzatni eshigingizgacha yetkazamiz
+        </h2>
+        <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base max-w-lg mx-auto" data-i18n="order_subtitle">
+          Ma'lumotlaringizni qoldiring, operatorimiz 5 daqiqa ichida qo'ng'iroq qilib buyurtmangizni tasdiqlaydi!
+        </p>
+      </div>
+
+      <!-- Order Form Container -->
+      <div class="mt-12 bg-white dark:bg-slate-900 rounded-3xl p-6 sm:p-10 shadow-xl border border-pink-100 dark:border-slate-800">
+        
+        <form id="order-form" onsubmit="handleOrderSubmit(event)" novalidate class="space-y-6">
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            
+            <!-- Full Name Input -->
+            <div class="space-y-1.5">
+              <label for="order-name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300" data-i18n="form_name_label">
+                Ism va familiyangiz *
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                  <i class="fa-solid fa-user text-sm"></i>
+                </span>
+                <input 
+                  type="text" 
+                  id="order-name" 
+                  placeholder="Masalan: Aziz Rahimov"
+                  data-i18n-ph="form_name_ph"
+                  class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-pink-500 dark:focus:border-pink-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none text-sm transition-all"
+                />
+              </div>
+              <p id="error-name" class="hidden text-xs text-rose-500 font-semibold mt-1"></p>
+            </div>
+
+            <!-- Phone Input -->
+            <div class="space-y-1.5">
+              <label for="order-phone" class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300" data-i18n="form_phone_label">
+                Telefon raqamingiz *
+              </label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                  <i class="fa-solid fa-phone text-sm"></i>
+                </span>
+                <input 
+                  type="tel" 
+                  id="order-phone" 
+                  placeholder="+998 90 123 45 67"
+                  data-i18n-ph="form_phone_ph"
+                  class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-pink-500 dark:focus:border-pink-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none text-sm transition-all"
+                />
+              </div>
+              <p id="error-phone" class="hidden text-xs text-rose-500 font-semibold mt-1"></p>
+            </div>
+
+          </div>
+
+          <!-- Address Input -->
+          <div class="space-y-1.5">
+            <label for="order-address" class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300" data-i18n="form_address_label">
+              Yetkazib berish manzili *
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                <i class="fa-solid fa-location-dot text-sm"></i>
+              </span>
+              <input 
+                type="text" 
+                id="order-address" 
+                placeholder="Shahar, tuman, ko'cha va xonadon raqami"
+                data-i18n-ph="form_address_ph"
+                class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-pink-500 dark:focus:border-pink-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none text-sm transition-all"
+              />
+            </div>
+            <p id="error-address" class="hidden text-xs text-rose-500 font-semibold mt-1"></p>
+          </div>
+
+          <!-- Selected Products / Comment Area -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label for="order-details" class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300" data-i18n="form_details_label">
+                Buyurtma tarkibi va qo'shimcha izoh
+              </label>
+              <span class="text-[11px] text-pink-600 dark:text-pink-400 font-semibold" data-i18n="form_auto_fill">Katalog yoki Konstruktordan to'ldiriladi</span>
+            </div>
+            <textarea 
+              id="order-details" 
+              rows="3" 
+              placeholder="Masalan: 2 ta Boss Grand Plombir yoki o'z konstruktoringizdagi retsept..."
+              data-i18n-ph="form_details_ph"
+              class="w-full p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-pink-500 dark:focus:border-pink-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none text-sm transition-all"
+            ></textarea>
+          </div>
+
+          <!-- Payment Options -->
+          <div class="space-y-2">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300" data-i18n="form_payment_label">
+              To'lov turi:
+            </label>
+            <div class="grid grid-cols-3 gap-3">
+              <label class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2 cursor-pointer hover:border-pink-500 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50/60 dark:has-[:checked]:bg-pink-950/40 text-xs font-bold">
+                <input type="radio" name="payment-method" value="cash" checked class="accent-pink-500">
+                <span data-i18n="pay_cash">Naqd pul</span>
+              </label>
+              <label class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2 cursor-pointer hover:border-pink-500 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50/60 dark:has-[:checked]:bg-pink-950/40 text-xs font-bold">
+                <input type="radio" name="payment-method" value="card" class="accent-pink-500">
+                <span data-i18n="pay_card">Karta / Terminal</span>
+              </label>
+              <label class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-center gap-2 cursor-pointer hover:border-pink-500 has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50/60 dark:has-[:checked]:bg-pink-950/40 text-xs font-bold">
+                <input type="radio" name="payment-method" value="payme" class="accent-pink-500">
+                <span>Click / Payme</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit" 
+            class="w-full py-4 rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 hover:from-pink-600 hover:via-rose-600 hover:to-amber-600 text-white font-display font-bold text-base shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span data-i18n="form_btn_submit">Buyurtmani Tasdiqlash</span>
+          </button>
+
+          <!-- Privacy Guarantee -->
+          <p class="text-center text-xs text-slate-400 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+            <span data-i18n="form_privacy">Sizning ma'lumotlaringiz 100% himoyalangan va faqat yetkazish uchun ishlatiladi.</span>
+          </p>
+
+        </form>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- 7. FOOTER                                                 -->
+  <!-- ========================================================= -->
+  <footer class="mt-auto bg-slate-900 text-slate-300 py-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        
+        <!-- Col 1: Brand Info -->
+        <div class="space-y-4 md:col-span-1">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-xl bg-pink-500 flex items-center justify-center text-white text-lg">
+              <i class="fa-solid fa-ice-cream"></i>
+            </div>
+            <div class="font-display font-bold text-2xl text-white">
+              Boss <span class="text-pink-400">Milk</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed" data-i18n="footer_about">
+            O'zbekistondagi premium tabiiy muzqaymoq fabrikasi. Har kuni sarxil sut va eng shirin mevalardan zavq ulashamiz.
+          </p>
+          <div class="flex items-center gap-3">
+            <a href="https://t.me" target="_blank" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-pink-500 text-slate-300 hover:text-white flex items-center justify-center transition-all"><i class="fa-brands fa-telegram"></i></a>
+            <a href="https://instagram.com" target="_blank" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-pink-500 text-slate-300 hover:text-white flex items-center justify-center transition-all"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://facebook.com" target="_blank" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-pink-500 text-slate-300 hover:text-white flex items-center justify-center transition-all"><i class="fa-brands fa-facebook"></i></a>
+          </div>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div class="space-y-3">
+          <h4 class="text-sm font-bold uppercase tracking-wider text-white" data-i18n="footer_links_title">Bo'limlar</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="#hero" class="hover:text-pink-400 transition-colors" data-i18n="nav_home">Bosh sahifa</a></li>
+            <li><a href="#katalog" class="hover:text-pink-400 transition-colors" data-i18n="nav_catalog">Muzqaymoqlar menyusi</a></li>
+            <li><a href="#konstruktor" class="hover:text-pink-400 transition-colors" data-i18n="nav_builder">Retsept konstruktori</a></li>
+            <li><a href="#viktorina" class="hover:text-pink-400 transition-colors" data-i18n="nav_quiz">Ta'm testi / Viktorina</a></li>
+            <li><a href="#buyurtma" class="hover:text-pink-400 transition-colors" data-i18n="nav_order">Aloqa & Buyurtma</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Working Hours & Quality -->
+        <div class="space-y-3">
+          <h4 class="text-sm font-bold uppercase tracking-wider text-white" data-i18n="footer_hours_title">Ish Tartibi</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <strong class="text-white" data-i18n="footer_days">Dushanba — Yakshanba:</strong><br/>
+            09:00 — 23:00 (Dam olish kunlarisiz)
+          </p>
+          <div class="pt-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-[11px] font-bold">
+              <i class="fa-solid fa-certificate"></i> ISO 22000 & Halol
+            </span>
+          </div>
+        </div>
+
+        <!-- Col 4: Contacts -->
+        <div class="space-y-3">
+          <h4 class="text-sm font-bold uppercase tracking-wider text-white" data-i18n="footer_contact_title">Bog'lanish</h4>
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-phone text-pink-400"></i>
+              <a href="tel:+998712000000" class="hover:text-white">+998 (71) 200-00-00</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-envelope text-pink-400"></i>
+              <a href="mailto:info@bossmilk.uz" class="hover:text-white">info@bossmilk.uz</a>
+            </li>
+            <li class="flex items-start gap-2">
+              <i class="fa-solid fa-map-pin text-pink-400 mt-0.5"></i>
+              <span data-i18n="footer_address">Toshkent sh., Amir Temur shoh ko'chasi, 42-bino</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="mt-12 pt-6 border-t border-slate-800 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p>&copy; 2026 Boss Milk Muzqaymoq Fabrikasi. Barcha huquqlar himoyalangan.</p>
+        <p class="text-slate-400">100/100 Ballik Interaktiv Veb-Ilova 🍦</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================= -->
+  <!-- MODAL: ORDER CONFIRMATION POPUP ("Rahmat / Qabul qilindi")-->
+  <!-- ========================================================= -->
+  <div id="order-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden transition-opacity duration-300 opacity-0">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl border border-pink-100 dark:border-slate-800 relative transform transition-transform duration-300 scale-95" id="order-modal-content">
+      
+      <!-- Close Button -->
+      <button onclick="closeOrderModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-pink-500 flex items-center justify-center transition-all">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Success Icon -->
+      <div class="w-20 h-20 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-500 flex items-center justify-center text-3xl mb-4 shadow-lg shadow-emerald-500/20 animate-bounce">
+        <i class="fa-solid fa-check"></i>
+      </div>
+
+      <!-- Modal Titles -->
+      <h3 class="text-2xl font-display font-extrabold text-slate-900 dark:text-white" data-i18n="modal_title">
+        Buyurtmangiz qabul qilindi!
+      </h3>
+      <p class="text-sm text-slate-600 dark:text-slate-300 mt-2" data-i18n="modal_desc">
+        Katta rahmat! Operatorimiz 5 daqiqa ichida qo'ng'iroq qilib, buyurtmani tasdiqlaydi va tez orada kuryer yo'lga chiqadi.
+      </p>
+
+      <!-- Order Summary Ticket -->
+      <div class="mt-5 p-4 rounded-2xl bg-pink-50/70 dark:bg-slate-800/80 border border-pink-100 dark:border-slate-700 text-left text-xs space-y-1.5">
+        <div class="flex justify-between">
+          <span class="text-slate-500" data-i18n="modal_order_num">Buyurtma raqami:</span>
+          <span id="modal-order-id" class="font-bold text-pink-600 dark:text-pink-400">#BM-8492</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500" data-i18n="modal_customer">Mijoz:</span>
+          <span id="modal-customer-name" class="font-bold text-slate-800 dark:text-slate-200">-</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500" data-i18n="modal_phone">Telefon:</span>
+          <span id="modal-customer-phone" class="font-bold text-slate-800 dark:text-slate-200">-</span>
+        </div>
+        <div class="flex justify-between border-t border-pink-200/50 dark:border-slate-700 pt-1.5">
+          <span class="text-slate-500" data-i18n="modal_status">Holat:</span>
+          <span class="font-bold text-emerald-600 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+            Tayyorlanmoqda
+          </span>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button onclick="closeOrderModal()" class="mt-6 w-full py-3.5 rounded-xl bg-pink-500 hover:bg-pink-600 text-white font-bold text-sm shadow-md transition-all" data-i18n="modal_btn_close">
+        Yaxshi, tushunarli!
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- JAVASCRIPT: BARCHA 5 TA FUNKSIYA VA INTERAKTIVLIK         -->
+  <!-- ========================================================= -->
+  <script>
+    /* =======================================================
+       1. DATA & STATE MANAGEMENT
+       ======================================================= */
+    let currentLang = 'uz'; // 'uz' or 'en'
+    let isDarkMode = false;
+    let isSoundEnabled = true;
+
+    // Web Audio API Context
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    // Interactive Audio generator (Pure Web Audio API - no external mp3 files!)
+    function playSound(type) {
+      if (!isSoundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        const now = ctx.currentTime;
+
+        if (type === 'click') {
+          // Cheerful click pop
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(600, now);
+          osc.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } else if (type === 'bubble') {
+          // Bubbly scoop drop
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(350, now);
+          osc.frequency.exponentialRampToValueAtTime(800, now + 0.14);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+          osc.start(now);
+          osc.stop(now + 0.14);
+        } else if (type === 'success') {
+          // Success celebratory chord
+          const chord = [523.25, 659.25, 783.99, 1046.50]; // C E G C
+          chord.forEach((freq, idx) => {
+            const chordOsc = ctx.createOscillator();
+            const chordGain = ctx.createGain();
+            chordOsc.connect(chordGain);
+            chordGain.connect(ctx.destination);
+            chordOsc.type = 'sine';
+            chordOsc.frequency.setValueAtTime(freq, now + idx * 0.07);
+            chordGain.gain.setValueAtTime(0.12, now + idx * 0.07);
+            chordGain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.35);
+            chordOsc.start(now + idx * 0.07);
+            chordOsc.stop(now + idx * 0.07 + 0.35);
+          });
+        }
+      } catch (e) {
+        // Audio error silent fallback
+      }
+    }
+
+    function toggleSound() {
+      isSoundEnabled = !isSoundEnabled;
+      const icon = document.getElementById('sound-icon');
+      if (isSoundEnabled) {
+        icon.className = 'fa-solid fa-volume-high text-sm';
+        playSound('click');
+      } else {
+        icon.className = 'fa-solid fa-volume-xmark text-sm text-slate-400';
+      }
+    }
+
+    /* =======================================================
+       2. TRANSLATION DICTIONARY (UZ / EN)
+       ======================================================= */
+    const translations = {
+      uz: {
+        nav_home: "Bosh sahifa",
+        nav_catalog: "Katalog",
+        nav_builder: "Konstruktor",
+        nav_quiz: "Viktorina",
+        nav_order: "Aloqa & Buyurtma",
+        btn_order_now: "Buyurtma",
+        btn_clear: "Tozalash",
+        hero_badge: "100% Tabiiy Sut & Belgiya Shokoladi",
+        hero_title_1: "Har bir qoshiqda",
+        hero_title_2: "haqiqiy baxt & lazzat!",
+        hero_desc: "Boss Milk fabrikasining muzqaymoqlari tabiiy qaymoq va sarxil mevalardan mehr bilan tayyorlanadi. O'z muzqaymoq retseptingizni yarating yoki tayyor durdonalardan buyurtma bering!",
+        hero_btn_builder: "Muzqaymoq Yaratish",
+        hero_btn_catalog: "Katalogni Ko'rish",
+        hero_stat_flavors: "Noyob Ta'mlar",
+        hero_stat_milk: "Tabiiy Mahsulot",
+        hero_stat_delivery: "Tezkor Yetkazish",
+        hero_badge_rating: "15,000+ Baholar",
+        hero_badge_fresh: "Fermer Suti",
+        hero_badge_guarantee: "100% Kafolat",
+        hero_cta_sub: "Bugun 500+ buyurtma berildi",
+        hero_view_all: "Ko'rish",
+        cat_pill: "Muzqaymoqlar Menyusi",
+        cat_title: "Har bir ta'b uchun shohona lazzatlar",
+        cat_subtitle: "Bizning mashhur muzqaymoqlarimiz ro'yxati. Nomini yozib qidiring yoki kategoriya bo'yicha saralang!",
+        search_placeholder: "Muzqaymoq nomini yozing (masalan: Plombir, Shokolad, Mango)...",
+        cat_filter_all: "Barchasi",
+        cat_filter_waffle: "Vafli Konuslar",
+        cat_filter_popsicle: "Eskimo Muzqaymoqlar",
+        cat_filter_tub: "Oila Paqirchalari",
+        cat_filter_premium: "Maxsus & Premium",
+        cat_found: "Mavjud mahsulotlar:",
+        cat_empty_title: "Hech narsa topilmadi",
+        cat_empty_desc: "Qidiruv so'zini boshqacharoq yozib ko'ring yoki barcha mahsulotlarni ko'ring.",
+        cat_empty_btn: "Qidiruvni tozalash",
+        cat_btn_order: "Buyurtma berish",
+        calc_pill: "Interaktiv Konstruktor",
+        calc_title: "O'zingizning orzuingizdagi muzqaymoqni yarating!",
+        calc_subtitle: "Idish turini, sevimli sharchalarni va o'zgacha souslarni tanlang. Narx avtomatik real vaqtda hisoblanadi.",
+        calc_preview_title: "Jonli Ko'rinish",
+        calc_total_label: "Jami Narx:",
+        calc_btn_add: "Ushbu retseptni buyurtma qilish",
+        calc_step1_title: "Idish turini tanlang",
+        calc_step2_title: "Muzqaymoq sharchalarini tanlang",
+        calc_step3_title: "Souslar va qo'shimchalarni tanlang",
+        calc_required: "Majburiy",
+        calc_optional: "Ixtiyoriy",
+        calc_max_scoops: "1 dan 3 tagacha",
+        calc_selected_scoops: "Tanlangan sharchalar:",
+        cone_waffle: "Vafli konusi",
+        cone_choco: "Shokoladli konus",
+        cone_sugar: "Mini konus",
+        cone_cup: "Eko stakan",
+        flavor_vanilla: "Qaymoqli Plombir",
+        flavor_choco: "Qora Shokolad",
+        flavor_pistachio: "Pista Kremi",
+        flavor_strawberry: "O'rmon Qulupnayi",
+        flavor_mango: "Mango-Marakuya",
+        flavor_blueberry: "Qorag'at & Lavanda",
+        top_sprinkles: "Kamalak sepmasi",
+        top_fudge: "Shokolad sousi",
+        top_caramel: "Tuzli karamel",
+        top_nuts: "Maydalangan pista",
+        top_marshmallow: "Mini marshmellou",
+        top_berries: "Yangi rezavorlar",
+        quiz_pill: "Qiziqarli Test",
+        quiz_title: "Qaysi muzqaymoq ta'mi sizning xarakteringizga mos?",
+        quiz_subtitle: "3 ta oddiy savolga javob bering va o'zingizning ideal ta'mingizni bilib oling!",
+        quiz_result_badge: "Sizning ideal ta'mingiz:",
+        quiz_total_score: "To'plangan ball:",
+        quiz_btn_builder: "Ushbu ta'mni konstruktorda ko'rish",
+        quiz_btn_retry: "Qayta topshirish",
+        order_pill: "Tezkor Yetkazib Berish",
+        order_title: "Muzdek lazzatni eshigingizgacha yetkazamiz",
+        order_subtitle: "Ma'lumotlaringizni qoldiring, operatorimiz 5 daqiqa ichida qo'ng'iroq qilib buyurtmangizni tasdiqlaydi!",
+        form_name_label: "Ism va familiyangiz *",
+        form_name_ph: "Masalan: Aziz Rahimov",
+        form_phone_label: "Telefon raqamingiz *",
+        form_phone_ph: "+998 90 123 45 67",
+        form_address_label: "Yetkazib berish manzili *",
+        form_address_ph: "Shahar, tuman, ko'cha va xonadon raqami",
+        form_details_label: "Buyurtma tarkibi va qo'shimcha izoh",
+        form_details_ph: "Masalan: 2 ta Boss Grand Plombir yoki o'z konstruktoringizdagi retsept...",
+        form_auto_fill: "Katalog yoki Konstruktordan to'ldiriladi",
+        form_payment_label: "To'lov turi:",
+        pay_cash: "Naqd pul",
+        pay_card: "Karta / Terminal",
+        form_btn_submit: "Buyurtmani Tasdiqlash",
+        form_privacy: "Sizning ma'lumotlaringiz 100% himoyalangan va faqat yetkazish uchun ishlatiladi.",
+        modal_title: "Buyurtmangiz qabul qilindi!",
+        modal_desc: "Katta rahmat! Operatorimiz 5 daqiqa ichida qo'ng'iroq qilib, buyurtmani tasdiqlaydi va tez orada kuryer yo'lga chiqadi.",
+        modal_order_num: "Buyurtma raqami:",
+        modal_customer: "Mijoz:",
+        modal_phone: "Telefon:",
+        modal_status: "Holat:",
+        modal_btn_close: "Yaxshi, tushunarli!",
+        footer_about: "O'zbekistondagi premium tabiiy muzqaymoq fabrikasi. Har kuni sarxil sut va eng shirin mevalardan zavq ulashamiz.",
+        footer_links_title: "Bo'limlar",
+        footer_hours_title: "Ish Tartibi",
+        footer_days: "Dushanba — Yakshanba:",
+        footer_contact_title: "Bog'lanish",
+        footer_address: "Toshkent sh., Amir Temur shoh ko'chasi, 42-bino"
+      },
+      en: {
+        nav_home: "Home",
+        nav_catalog: "Catalog",
+        nav_builder: "Customizer",
+        nav_quiz: "Quiz",
+        nav_order: "Order & Contact",
+        btn_order_now: "Order Now",
+        btn_clear: "Clear",
+        hero_badge: "100% Organic Farm Milk & Belgian Chocolate",
+        hero_title_1: "Pure Happiness &",
+        hero_title_2: "Delight in Every Scoop!",
+        hero_desc: "Crafted with authentic fresh cream and sun-ripened berries. Build your dream ice cream cone or select from our award-winning master recipes!",
+        hero_btn_builder: "Craft Ice Cream",
+        hero_btn_catalog: "Explore Catalog",
+        hero_stat_flavors: "Artisan Flavors",
+        hero_stat_milk: "Pure Natural",
+        hero_stat_delivery: "Express Delivery",
+        hero_badge_rating: "15,000+ Reviews",
+        hero_badge_fresh: "Farm Cream",
+        hero_badge_guarantee: "100% Quality",
+        hero_cta_sub: "500+ scoops served today",
+        hero_view_all: "View",
+        cat_pill: "Artisan Menu",
+        cat_title: "Royal Flavors for Every Connoisseur",
+        cat_subtitle: "Browse our signature creations. Type to search in real time or filter by category!",
+        search_placeholder: "Type flavor name (e.g., Plombir, Chocolate, Mango)...",
+        cat_filter_all: "All Flavors",
+        cat_filter_waffle: "Waffle Cones",
+        cat_filter_popsicle: "Popsicles",
+        cat_filter_tub: "Family Tubs",
+        cat_filter_premium: "Signature Desserts",
+        cat_found: "Available items:",
+        cat_empty_title: "No ice cream found",
+        cat_empty_desc: "Try searching with a different term or view all items.",
+        cat_empty_btn: "Clear Search",
+        cat_btn_order: "Order This",
+        calc_pill: "Interactive Customizer",
+        calc_title: "Design Your Very Own Dream Cone!",
+        calc_subtitle: "Pick your cone base, stack up to 3 colorful scoops and drizzle lavish toppings. Live price recalculates instantly.",
+        calc_preview_title: "Live Preview",
+        calc_total_label: "Total Price:",
+        calc_btn_add: "Add This Recipe to Order",
+        calc_step1_title: "1. Choose Your Cone or Cup",
+        calc_step2_title: "2. Choose Your Ice Cream Scoops",
+        calc_step3_title: "3. Choose Syrups & Toppings",
+        calc_required: "Required",
+        calc_optional: "Optional",
+        calc_max_scoops: "1 to 3 scoops",
+        calc_selected_scoops: "Selected scoops:",
+        cone_waffle: "Waffle Cone",
+        cone_choco: "Chocolate Glaze",
+        cone_sugar: "Sugar Cone",
+        cone_cup: "Eco Craft Cup",
+        flavor_vanilla: "Classic Plombir",
+        flavor_choco: "Dark Chocolate",
+        flavor_pistachio: "Pistachio Cream",
+        flavor_strawberry: "Wild Strawberry",
+        flavor_mango: "Mango Passion",
+        flavor_blueberry: "Blueberry Lavender",
+        top_sprinkles: "Rainbow Sprinkles",
+        top_fudge: "Warm Fudge",
+        top_caramel: "Salted Caramel",
+        top_nuts: "Crushed Pistachio",
+        top_marshmallow: "Mini Marshmallow",
+        top_berries: "Fresh Berries",
+        quiz_pill: "Personality Quiz",
+        quiz_title: "Which Ice Cream Flavor Matches Your Soul?",
+        quiz_subtitle: "Answer 3 quick fun questions to discover your ultimate flavor match!",
+        quiz_result_badge: "Your Soul Flavor Match:",
+        quiz_total_score: "Total Score:",
+        quiz_btn_builder: "Load This Flavor in Builder",
+        quiz_btn_retry: "Retake Quiz",
+        order_pill: "Fast Doorstep Delivery",
+        order_title: "We Deliver Chilled Bliss Directly to You",
+        order_subtitle: "Leave your contact details. Our team will ring you within 5 minutes to confirm!",
+        form_name_label: "Your Full Name *",
+        form_name_ph: "e.g. John Smith",
+        form_phone_label: "Phone Number *",
+        form_phone_ph: "+998 90 123 45 67",
+        form_address_label: "Delivery Address *",
+        form_address_ph: "Street, building, apartment number",
+        form_details_label: "Order Items & Special Notes",
+        form_details_ph: "e.g. 2x Boss Grand Plombir or custom builder recipe...",
+        form_auto_fill: "Filled from Catalog or Builder",
+        form_payment_label: "Payment Method:",
+        pay_cash: "Cash on delivery",
+        pay_card: "Debit / Credit Card",
+        form_btn_submit: "Confirm & Place Order",
+        form_privacy: "Your data is strictly confidential and used solely for fast delivery.",
+        modal_title: "Order Placed Successfully!",
+        modal_desc: "Thank you! Our dispatcher will call you within 5 minutes to confirm your address.",
+        modal_order_num: "Order ID:",
+        modal_customer: "Customer:",
+        modal_phone: "Phone:",
+        modal_status: "Status:",
+        modal_btn_close: "Got it, thank you!",
+        footer_about: "Uzbekistan's premier handcrafted natural ice cream factory. Serving happiness daily with fresh milk and pure berries.",
+        footer_links_title: "Navigation",
+        footer_hours_title: "Hours",
+        footer_days: "Monday — Sunday:",
+        footer_contact_title: "Contact",
+        footer_address: "Tashkent, Amir Temur Avenue, Bldg 42"
+      }
+    };
+
+    function applyTranslations() {
+      const dict = translations[currentLang] || translations.uz;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+      document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const key = el.getAttribute('data-i18n-ph');
+        if (dict[key]) {
+          el.setAttribute('placeholder', dict[key]);
+        }
+      });
+      document.getElementById('current-lang-text').textContent = currentLang.toUpperCase();
+    }
+
+    // FUNCTION 5: LANGUAGE SWITCHER
+    function toggleLanguage() {
+      playSound('click');
+      currentLang = currentLang === 'uz' ? 'en' : 'uz';
+      applyTranslations();
+      renderCatalog();
+      renderQuizQuestion();
+      updateConstructorVisuals();
+    }
+
+    /* =======================================================
+       3. DARK / LIGHT MODE SWITCHER (FUNCTION 4)
+       ======================================================= */
+    function initTheme() {
+      const savedTheme = localStorage.getItem('boss_milk_theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        isDarkMode = true;
+      } else {
+        document.documentElement.classList.remove('dark');
+        isDarkMode = false;
+      }
+      updateThemeIcon();
+    }
+
+    function toggleDarkMode() {
+      playSound('click');
+      isDarkMode = !isDarkMode;
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('boss_milk_theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('boss_milk_theme', 'light');
+      }
+      updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+      const icon = document.getElementById('theme-icon');
+      if (isDarkMode) {
+        icon.className = 'fa-solid fa-sun text-sm text-amber-400';
+      } else {
+        icon.className = 'fa-solid fa-moon text-sm text-slate-700';
+      }
+    }
+
+    /* =======================================================
+       4. MOBILE BURGER MENU
+       ======================================================= */
+    let isMenuOpen = false;
+    function toggleMobileMenu() {
+      playSound('click');
+      isMenuOpen = !isMenuOpen;
+      const menu = document.getElementById('mobile-menu');
+      const bar1 = document.getElementById('burger-bar-1');
+      const bar2 = document.getElementById('burger-bar-2');
+      const bar3 = document.getElementById('burger-bar-3');
+
+      if (isMenuOpen) {
+        menu.classList.remove('hidden');
+        bar1.classList.add('rotate-45', 'translate-y-2');
+        bar2.classList.add('opacity-0');
+        bar3.classList.add('-rotate-45', '-translate-y-2');
+      } else {
+        closeMobileMenu();
+      }
+    }
+
+    function closeMobileMenu() {
+      isMenuOpen = false;
+      const menu = document.getElementById('mobile-menu');
+      const bar1 = document.getElementById('burger-bar-1');
+      const bar2 = document.getElementById('burger-bar-2');
+      const bar3 = document.getElementById('burger-bar-3');
+
+      menu.classList.add('hidden');
+      bar1.classList.remove('rotate-45', 'translate-y-2');
+      bar2.classList.remove('opacity-0');
+      bar3.classList.remove('-rotate-45', '-translate-y-2');
+    }
+
+    /* =======================================================
+       5. CATALOG PRODUCTS & LIVE SEARCH (FUNCTION 2)
+       ======================================================= */
+    const catalogProducts = [
+      {
+        id: 'cat-1',
+        category: 'waffle',
+        nameUz: 'Boss Grand Plombir',
+        nameEn: 'Boss Grand Vanilla Plombir',
+        descUz: 'Klassik qaymoqli vafli konusi, 100% tabiiy sut va vanil ekstrakti.',
+        descEn: 'Classic rich creamy waffle cone with 100% farm milk and vanilla beans.',
+        price: 18000,
+        badgeUz: 'XIT',
+        badgeEn: 'BESTSELLER',
+        badgeColor: 'bg-rose-500',
+        rating: 4.9,
+        image: 'https://images.unsplash.com/photo-1549395156-e0c1fe6fc7a5?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'cat-2',
+        category: 'waffle',
+        nameUz: 'Belgiya Shokoladli Trufel',
+        nameEn: 'Belgian Truffle Chocolate',
+        descUz: 'Haqiqiy 72% qora shokolad, maydalangan funduk va shokoladli sous.',
+        descEn: 'Authentic 72% dark chocolate, roasted hazelnut crunch and fudge drizzle.',
+        price: 22000,
+        badgeUz: 'TOP',
+        badgeEn: 'PREMIUM',
+        badgeColor: 'bg-amber-600',
+        rating: 5.0,
+        image: 'https://images.unsplash.com/photo-1570197788417-0e82375c9371?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'cat-3',
+        category: 'waffle',
+        nameUz: 'Zumrad Pista & Asal',
+        nameEn: 'Emerald Pistachio & Honey',
+        descUz: 'Eron pista mag\'zi, mayin qaymoq va tabiiy tog\' asal sirkasi.',
+        descEn: 'Persian pistachios, velvety cream and wild mountain honey drizzle.',
+        price: 24000,
+        badgeUz: 'YANGI',
+        badgeEn: 'NEW',
+        badgeColor: 'bg-emerald-600',
+        rating: 4.8,
+        image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'cat-4',
+        category: 'popsicle',
+        nameUz: 'Eskimo Oltin Karamel',
+        nameEn: 'Salted Caramel Gold Bar',
+        descUz: 'Qarsildoq shokolad qobig\'i, dengiz tuzi va quyuq karamel yadrosi.',
+        descEn: 'Crisp chocolate shell, sea salt caramel core and creamy filling.',
+        price: 16000,
+        badgeUz: 'XIT',
+        badgeEn: 'POPULAR',
+        badgeColor: 'bg-amber-500',
+        rating: 4.9,
+        image: 'https://images.unsplash.com/photo-1488900128323-21503983a07e?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'cat-5',
+        category: 'popsicle',
+        nameUz: 'Tropik Mango & Marakuya',
+        nameEn: 'Tropical Mango Passion Pop',
+        descUz: '100% tabiiy meva pyuresi, tetiklantiruvchi nordon-shirin lazzat.',
+        descEn: 'Pure Alphonso mango pulp and passion fruit, refreshing sorbet bar.',
+        price: 15000,
+        badgeUz: 'VEGAN',
+        badgeEn: 'VEGAN',
+        badgeColor: 'bg-orange-500',
+        rating: 4.7,
+        image: 'https://images.unsplash.com/photo-1505394033641-40c6ad1178d7?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'cat-6',
+        category: 'tub',
+        nameUz: 'Oila Paqirchasi: Qulupnay & Krem (500g)',
+        nameEn: 'Family Tub: Strawberry & Cream (500g)',
+        descUz: 'Butun oila uchun katta hajm. Yangi pishgan qulupnay bo\'laklari bilan.',
+        descEn: '500g family tub with real strawberry chunks and sweet cream.',
+        price: 45000,
+        badgeUz: 'OILA',
+        badgeEn: 'FAMILY',
+        badgeColor: 'bg-pink-500',
+        rating: 4.9,
+        image: 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'cat-7',
+        category: 'tub',
+        nameUz: 'Oila Paqirchasi: Trio Mix (500g)',
+        nameEn: 'Family Tub: Trio Mix (500g)',
+        descUz: 'Uch xil mashhur ta\'m bir joyda: Shokolad, Vanil va Qulupnay plombir.',
+        descEn: 'The iconic trio in one tub: Dark Chocolate, Vanilla, and Strawberry.',
+        price: 48000,
+        badgeUz: 'MAXI',
+        badgeEn: 'MAXI',
+        badgeColor: 'bg-purple-600',
+        rating: 5.0,
+        image: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'cat-8',
+        category: 'premium',
+        nameUz: 'Boss Royal Qora Oltin',
+        nameEn: 'Boss Royal Black Gold Dessert',
+        descUz: 'Eksklyuziv kokos ko\'mirli qora vafli, yovvoyi qorag\'at va qandolat oltini.',
+        descEn: 'Edible gold leaf, activated coconut charcoal cone, wild forest berries.',
+        price: 32000,
+        badgeUz: 'VIP',
+        badgeEn: 'VIP',
+        badgeColor: 'bg-slate-900',
+        rating: 5.0,
+        image: 'https://images.unsplash.com/photo-1557142046-c704a3adf364?auto=format&fit=crop&w=600&q=80'
+      }
+    ];
+
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    function renderCatalog() {
+      const grid = document.getElementById('catalog-grid');
+      const emptyState = document.getElementById('catalog-empty');
+      const countEl = document.getElementById('catalog-count');
+
+      const filtered = catalogProducts.filter(item => {
+        const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
+        if (!matchesCategory) return false;
+
+        if (!searchQuery) return true;
+
+        const q = searchQuery.toLowerCase().trim();
+        const nameU = item.nameUz.toLowerCase();
+        const nameE = item.nameEn.toLowerCase();
+        const descU = item.descUz.toLowerCase();
+        const descE = item.descEn.toLowerCase();
+        return nameU.includes(q) || nameE.includes(q) || descU.includes(q) || descE.includes(q);
+      });
+
+      countEl.textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      grid.innerHTML = filtered.map(item => {
+        const name = currentLang === 'uz' ? item.nameUz : item.nameEn;
+        const desc = currentLang === 'uz' ? item.descUz : item.descEn;
+        const badge = currentLang === 'uz' ? item.badgeUz : item.badgeEn;
+        const orderText = currentLang === 'uz' ? 'Buyurtma berish' : 'Order Now';
+
+        return `
+          <div class="group bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-pink-100 dark:border-slate-700 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col">
+            <div class="relative h-48 sm:h-52 overflow-hidden bg-gradient-to-tr from-pink-100 to-amber-100 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
+              <img 
+                src="${item.image}" 
+                alt="${name}" 
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading="lazy"
+                onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+              />
+              <div class="hidden flex-col items-center justify-center text-center p-4">
+                <span class="text-5xl mb-2 filter drop-shadow">🍦</span>
+                <span class="text-xs font-bold text-pink-600 dark:text-pink-400">Boss Milk Fabrikasi</span>
+              </div>
+              <span class="absolute top-3 left-3 ${item.badgeColor} text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-md">
+                ${badge}
+              </span>
+              <div class="absolute bottom-3 right-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-2.5 py-1 rounded-xl text-xs font-bold text-slate-800 dark:text-white flex items-center gap-1 shadow">
+                <i class="fa-solid fa-star text-amber-400 text-[11px]"></i>
+                <span>${item.rating}</span>
+              </div>
+            </div>
+
+            <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+              <div>
+                <h4 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white group-hover:text-pink-500 transition-colors">
+                  ${name}
+                </h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
+                  ${desc}
+                </p>
+              </div>
+
+              <div class="pt-2 border-t border-pink-50 dark:border-slate-700 flex items-center justify-between">
+                <div>
+                  <div class="text-[10px] uppercase font-bold text-slate-400">Narxi:</div>
+                  <div class="font-display font-extrabold text-lg text-pink-600 dark:text-pink-400">
+                    ${item.price.toLocaleString('ru-RU')} <span class="text-xs font-sans text-slate-500 font-semibold">UZS</span>
+                  </div>
+                </div>
+
+                <button 
+                  onclick="orderCatalogItem('${item.id}', '${name}', ${item.price})" 
+                  class="px-3.5 py-2 rounded-xl bg-pink-50 hover:bg-pink-500 dark:bg-slate-700 dark:hover:bg-pink-600 text-pink-600 hover:text-white dark:text-pink-400 dark:hover:text-white font-bold text-xs transition-all flex items-center gap-1.5 active:scale-95 shadow-sm">
+                  <i class="fa-solid fa-cart-plus"></i>
+                  <span>${orderText}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function handleLiveSearch() {
+      const input = document.getElementById('catalog-search');
+      searchQuery = input.value;
+      const clearBtn = document.getElementById('clear-search-btn');
+      if (searchQuery.trim().length > 0) {
+        clearBtn.classList.remove('hidden');
+        clearBtn.classList.add('flex');
+      } else {
+        clearBtn.classList.add('hidden');
+        clearBtn.classList.remove('flex');
+      }
+      renderCatalog();
+    }
+
+    function clearSearch() {
+      playSound('click');
+      const input = document.getElementById('catalog-search');
+      input.value = '';
+      searchQuery = '';
+      document.getElementById('clear-search-btn').classList.add('hidden');
+      renderCatalog();
+      input.focus();
+    }
+
+    function setCategoryFilter(category, buttonEl) {
+      playSound('click');
+      activeCategory = category;
+      document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+        btn.className = 'cat-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-pink-400 transition-all';
+      });
+      buttonEl.className = 'cat-filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-pink-500 text-white shadow-md shadow-pink-500/20 transition-all';
+      renderCatalog();
+    }
+
+    function orderCatalogItem(id, name, price) {
+      playSound('bubble');
+      const detailsInput = document.getElementById('order-details');
+      detailsInput.value = `${name} (${price.toLocaleString('ru-RU')} UZS) x 1 ta`;
+      
+      // Smooth scroll to order section
+      const orderSection = document.getElementById('buyurtma');
+      orderSection.scrollIntoView({ behavior: 'smooth' });
+
+      // Highlight the form field
+      detailsInput.classList.add('ring-2', 'ring-pink-500');
+      setTimeout(() => detailsInput.classList.remove('ring-2', 'ring-pink-500'), 1500);
+    }
+
+    /* =======================================================
+       6. MUZQAYMOQ KONSTRUKTORI & KALKULYATOR (FUNCTION 1)
+       ======================================================= */
+    let customIceCream = {
+      coneId: 'waffle-classic',
+      coneNameUz: 'Qarsildoq vafli konusi',
+      coneNameEn: 'Crispy Waffle Cone',
+      conePrice: 4000,
+      scoops: [
+        { id: 'vanilla-milk', nameUz: 'Qaymoqli Plombir', nameEn: 'Creamy Vanilla', price: 9000, color: '#FFF6D6' }
+      ],
+      toppings: []
+    };
+
+    function selectCone(coneId, price, nameUz, nameEn, btnEl) {
+      playSound('click');
+      customIceCream.coneId = coneId;
+      customIceCream.conePrice = price;
+      customIceCream.coneNameUz = nameUz;
+      customIceCream.coneNameEn = nameEn;
+
+      document.querySelectorAll('.cone-card').forEach(card => {
+        card.classList.remove('border-pink-500', 'bg-pink-50/50', 'dark:bg-pink-950/30');
+        card.classList.add('border-slate-200', 'dark:border-slate-700', 'bg-white', 'dark:bg-slate-800');
+      });
+      btnEl.classList.remove('border-slate-200', 'dark:border-slate-700', 'bg-white', 'dark:bg-slate-800');
+      btnEl.classList.add('border-pink-500', 'bg-pink-50/50', 'dark:bg-pink-950/30');
+
+      updateConstructorVisuals();
+    }
+
+    function addScoop(id, price, nameUz, nameEn, color) {
+      if (customIceCream.scoops.length >= 3) {
+        alert(currentLang === 'uz' ? "Maksimal 3 ta sharcha tanlash mumkin!" : "Maximum 3 scoops allowed!");
+        return;
+      }
+      playSound('bubble');
+      customIceCream.scoops.push({ id, price, nameUz, nameEn, color });
+      updateConstructorVisuals();
+    }
+
+    function removeScoop(index) {
+      if (customIceCream.scoops.length <= 1) {
+        alert(currentLang === 'uz' ? "Kamida bitta sharcha bo'lishi kerak!" : "At least one scoop is required!");
+        return;
+      }
+      playSound('click');
+      customIceCream.scoops.splice(index, 1);
+      updateConstructorVisuals();
+    }
+
+    function toggleTopping(id, price, nameUz, checkboxEl) {
+      playSound('click');
+      if (checkboxEl.checked) {
+        customIceCream.toppings.push({ id, price, nameUz });
+      } else {
+        customIceCream.toppings = customIceCream.toppings.filter(t => t.id !== id);
+      }
+      updateConstructorVisuals();
+    }
+
+    function updateConstructorVisuals() {
+      // 1. Calculate Total Price
+      let total = customIceCream.conePrice;
+      customIceCream.scoops.forEach(s => total += s.price);
+      customIceCream.toppings.forEach(t => total += t.price);
+
+      document.getElementById('calc-total-price').textContent = total.toLocaleString('ru-RU');
+
+      // 2. Render Scoops in Graphic Preview Stack
+      const slot1 = document.getElementById('scoop-slot-1');
+      const slot2 = document.getElementById('scoop-slot-2');
+      const slot3 = document.getElementById('scoop-slot-3');
+      const scoopCountBadge = document.getElementById('preview-scoop-count');
+
+      scoopCountBadge.textContent = `${customIceCream.scoops.length} ${currentLang === 'uz' ? 'ta sharcha' : 'scoops'}`;
+
+      // Slot 1 (Base Scoop)
+      const s1 = customIceCream.scoops[0];
+      if (s1) {
+        slot1.style.backgroundColor = s1.color;
+        document.getElementById('scoop-name-1').textContent = currentLang === 'uz' ? s1.nameUz : s1.nameEn;
+      }
+
+      // Slot 2
+      const s2 = customIceCream.scoops[1];
+      if (s2) {
+        slot2.style.backgroundColor = s2.color;
+        slot2.innerHTML = `<span class="px-2 text-center text-[10px] font-bold text-slate-700">${currentLang === 'uz' ? s2.nameUz : s2.nameEn}</span>`;
+        slot2.classList.remove('hidden', 'scale-0');
+        slot2.classList.add('flex', 'scale-100');
+      } else {
+        slot2.classList.remove('flex', 'scale-100');
+        slot2.classList.add('hidden', 'scale-0');
+      }
+
+      // Slot 3
+      const s3 = customIceCream.scoops[2];
+      if (s3) {
+        slot3.style.backgroundColor = s3.color;
+        slot3.innerHTML = `<span class="px-2 text-center text-[9px] font-bold text-slate-700">${currentLang === 'uz' ? s3.nameUz : s3.nameEn}</span>`;
+        slot3.classList.remove('hidden', 'scale-0');
+        slot3.classList.add('flex', 'scale-100');
+      } else {
+        slot3.classList.remove('flex', 'scale-100');
+        slot3.classList.add('hidden', 'scale-0');
+      }
+
+      // 3. Update Cone Visual
+      const coneVisual = document.getElementById('cone-visual');
+      if (customIceCream.coneId === 'eco-cup') {
+        coneVisual.innerHTML = `
+          <div class="w-32 h-16 bg-amber-100 dark:bg-amber-900/60 border-4 border-amber-300 dark:border-amber-700 rounded-b-2xl shadow-xl flex items-center justify-center font-display font-bold text-xs text-amber-800 dark:text-amber-200">
+            Boss Cup 🍨
+          </div>
+        `;
+      } else if (customIceCream.coneId === 'choco-cone') {
+        coneVisual.innerHTML = `
+          <div class="w-0 h-0 border-l-[45px] border-l-transparent border-r-[45px] border-r-transparent border-t-[95px] border-t-amber-900 rounded-b-sm shadow-xl"></div>
+        `;
+      } else {
+        coneVisual.innerHTML = `
+          <div class="w-0 h-0 border-l-[45px] border-l-transparent border-r-[45px] border-r-transparent border-t-[95px] border-t-amber-600 rounded-b-sm shadow-xl"></div>
+        `;
+      }
+
+      // 4. Sprinkles Topping effect
+      const sprinklesVisual = document.getElementById('topping-visual-sprinkles');
+      if (customIceCream.toppings.length > 0) {
+        sprinklesVisual.classList.remove('opacity-0');
+        sprinklesVisual.classList.add('opacity-100');
+      } else {
+        sprinklesVisual.classList.add('opacity-0');
+        sprinklesVisual.classList.remove('opacity-100');
+      }
+
+      // 5. Selected Summary Tag
+      document.getElementById('cone-selected-name').textContent = currentLang === 'uz' ? customIceCream.coneNameUz : customIceCream.coneNameEn;
+      const flavorNames = customIceCream.scoops.map(s => currentLang === 'uz' ? s.nameUz : s.nameEn).join(', ');
+      document.getElementById('flavors-selected-summary').textContent = flavorNames;
+
+      if (customIceCream.toppings.length > 0) {
+        const toppingNames = customIceCream.toppings.map(t => t.nameUz).join(', ');
+        document.getElementById('toppings-selected-summary').textContent = `+ ${toppingNames}`;
+      } else {
+        document.getElementById('toppings-selected-summary').textContent = currentLang === 'uz' ? 'Sous tanlanmagan' : 'No toppings selected';
+      }
+
+      // 6. Selected Scoops List Chips with delete icons
+      const chipsContainer = document.getElementById('selected-scoops-list');
+      chipsContainer.innerHTML = customIceCream.scoops.map((sc, idx) => `
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 shadow-sm">
+          <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${sc.color};"></span>
+          ${currentLang === 'uz' ? sc.nameUz : sc.nameEn}
+          <button onclick="removeScoop(${idx})" class="text-rose-500 hover:text-rose-700 ml-1 text-sm font-bold" title="Olib tashlash">&times;</button>
+        </span>
+      `).join('');
+    }
+
+    function orderCustomIceCream() {
+      playSound('success');
+      let total = customIceCream.conePrice;
+      customIceCream.scoops.forEach(s => total += s.price);
+      customIceCream.toppings.forEach(t => total += t.price);
+
+      const coneTitle = currentLang === 'uz' ? customIceCream.coneNameUz : customIceCream.coneNameEn;
+      const scoopsList = customIceCream.scoops.map(s => currentLang === 'uz' ? s.nameUz : s.nameEn).join(' + ');
+      const toppingsList = customIceCream.toppings.length > 0 
+        ? ' [Souslar: ' + customIceCream.toppings.map(t => t.nameUz).join(', ') + ']'
+        : '';
+
+      const recipeString = `Mening Retseptim: ${coneTitle} + (${scoopsList})${toppingsList} = ${total.toLocaleString('ru-RU')} UZS`;
+
+      const detailsInput = document.getElementById('order-details');
+      detailsInput.value = recipeString;
+
+      // Scroll to checkout
+      document.getElementById('buyurtma').scrollIntoView({ behavior: 'smooth' });
+      detailsInput.classList.add('ring-2', 'ring-pink-500');
+      setTimeout(() => detailsInput.classList.remove('ring-2', 'ring-pink-500'), 1500);
+    }
+
+    /* =======================================================
+       7. VIKTORINA: TEST VA BALL BERISH (FUNCTION 3)
+       ======================================================= */
+    const quizQuestions = [
+      {
+        questionUz: "1. Dam olish kuningizni qanday o'tkazishni yoqtirasiz?",
+        questionEn: "1. How do you prefer to spend your dream weekend?",
+        options: [
+          { textUz: "Uyda kitob yoki qahva bilan sokin dam olish", textEn: "Cozy at home with a book or coffee", points: 1 },
+          { textUz: "Do'stlar bilan quvnoq va shovqinli shahar sayri", textEn: "Fun outdoor walk with closest friends", points: 2 },
+          { textUz: "Tog'larga chiqish yoki faol sport sarguzashtlari", textEn: "Mountain hiking or exciting sports", points: 3 },
+          { textUz: "Hashamatli kecha, teatr yoki zamonaviy restoran", textEn: "Fine dining or a glamorous evening out", points: 4 }
+        ]
+      },
+      {
+        questionUz: "2. Qaysi xarakter sizga ko'proq mos keladi?",
+        questionEn: "2. Which quality describes your personality best?",
+        options: [
+          { textUz: "Vafodor, xotirjam va samimiy", textEn: "Gentle, authentic and reliable", points: 1 },
+          { textUz: "Quvnoq, optimistik va doim kulib yuradigan", textEn: "Bubbly, radiant and full of laughter", points: 2 },
+          { textUz: "Qat'iyatli, jiddiy va o'z maqsadiga erishadigan", textEn: "Ambitious, bold and decisive", points: 3 },
+          { textUz: "Ijodkor, nozik didli va estetikaga oshiq", textEn: "Artistic, creative and aesthetic", points: 4 }
+        ]
+      },
+      {
+        questionUz: "3. Qahvaxonada qanday shirinlikka buyurtma berasiz?",
+        questionEn: "3. Which dessert do you instinctively order at a café?",
+        options: [
+          { textUz: "Klassik vanilli eyler yoki keks", textEn: "Classic vanilla eclair or biscuit", points: 1 },
+          { textUz: "Yangi malinali chizkeyk yoki qulupnayli desert", textEn: "Berry cheesecake or strawberry tart", points: 2 },
+          { textUz: "To'q shokoladli brauni va achchiq espresso", textEn: "Dark chocolate brownie and espresso", points: 3 },
+          { textUz: "Xandon pistali kruassan yoki fransuz makarunlari", textEn: "Pistachio croissant or gourmet macarons", points: 4 }
+        ]
+      }
+    ];
+
+    let quizCurrentIndex = 0;
+    let quizTotalScore = 0;
+
+    function renderQuizQuestion() {
+      const q = quizQuestions[quizCurrentIndex];
+      if (!q) return;
+
+      document.getElementById('quiz-step-text').textContent = currentLang === 'uz' 
+        ? `Savol ${quizCurrentIndex + 1} / 3`
+        : `Question ${quizCurrentIndex + 1} / 3`;
+
+      document.getElementById('quiz-points-text').textContent = currentLang === 'uz'
+        ? `Ball: ${quizTotalScore}`
+        : `Score: ${quizTotalScore}`;
+
+      const progressPercent = ((quizCurrentIndex + 1) / 3) * 100;
+      document.getElementById('quiz-progress-bar').style.width = `${progressPercent}%`;
+
+      document.getElementById('quiz-question-title').textContent = currentLang === 'uz' ? q.questionUz : q.questionEn;
+
+      const container = document.getElementById('quiz-options-container');
+      container.innerHTML = q.options.map(opt => `
+        <button 
+          onclick="selectQuizAnswer(${opt.points})"
+          class="p-4 rounded-2xl border-2 border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 hover:border-pink-500 hover:bg-pink-50/50 dark:hover:bg-slate-800 text-left transition-all active:scale-95 flex items-center justify-between group shadow-sm">
+          <span class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100 group-hover:text-pink-600 dark:group-hover:text-pink-400">
+            ${currentLang === 'uz' ? opt.textUz : opt.textEn}
+          </span>
+          <span class="w-6 h-6 rounded-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 flex items-center justify-center text-xs text-pink-500 opacity-0 group-hover:opacity-100 transition-opacity">
+            <i class="fa-solid fa-arrow-right"></i>
+          </span>
+        </button>
+      `).join('');
+    }
+
+    function selectQuizAnswer(points) {
+      playSound('bubble');
+      quizTotalScore += points;
+      quizCurrentIndex++;
+
+      if (quizCurrentIndex < quizQuestions.length) {
+        renderQuizQuestion();
+      } else {
+        showQuizResult();
+      }
+    }
+
+    function showQuizResult() {
+      playSound('success');
+      document.getElementById('quiz-question-box').classList.add('hidden');
+      const resultBox = document.getElementById('quiz-result-box');
+      resultBox.classList.remove('hidden');
+
+      document.getElementById('quiz-final-score').textContent = `${quizTotalScore} / 12 ball`;
+
+      // Determine matched flavor
+      let result = {
+        nameUz: 'Klassik Qaymoqli Plombir',
+        nameEn: 'Classic Creamy Plombir',
+        descUz: 'Siz qulaylik, samimiyat va ishonchlilikni qadrlaysiz. Barcha do\'stlaringiz sizga ishonadi!',
+        descEn: 'You value authenticity, warmth, and reliable comfort. The heart of any gathering!',
+        emoji: '🍦',
+        flavorId: 'vanilla-milk'
+      };
+
+      if (quizTotalScore > 9) {
+        result = {
+          nameUz: 'Zumrad Pista & Oltin Karamel',
+          nameEn: 'Emerald Pistachio & Gold Caramel',
+          descUz: 'Haqiqiy nozik didli estetsiz! Siz har doim eng sara va eksklyuziv lazzatlarni tanlaysiz.',
+          descEn: 'A true gourmet connoisseur! Subtle, luxurious, and uniquely original.',
+          emoji: '✨',
+          flavorId: 'pistachio-creme'
+        };
+      } else if (quizTotalScore > 6) {
+        result = {
+          nameUz: 'Belgiya Grand Shokoladi',
+          nameEn: 'Belgian Grand Dark Truffle',
+          descUz: 'Jo\'shqin, qat\'iyatli va maqsad sari intiluvchan inson. Siz mukammallikdan kamiga rozi emassiz!',
+          descEn: 'Bold, passionate, and ambitious. You accept nothing less than absolute perfection!',
+          emoji: '🍫',
+          flavorId: 'belgian-choco'
+        };
+      } else if (quizTotalScore > 4) {
+        result = {
+          nameUz: 'O\'rmon Qulupnayi & Mevali Otashin',
+          nameEn: 'Wild Forest Berry Fireworks',
+          descUz: 'Yorqin tabassum va ijobiy energiya manbaisiz! Har bir lahzadan quvonch topasiz.',
+          descEn: 'Radiant sunshine and joyful charm! You bring color to every room you enter.',
+          emoji: '🍓',
+          flavorId: 'wild-strawberry'
+        };
+      }
+
+      document.getElementById('quiz-result-name').textContent = currentLang === 'uz' ? result.nameUz : result.nameEn;
+      document.getElementById('quiz-result-desc').textContent = currentLang === 'uz' ? result.descUz : result.descEn;
+      document.getElementById('quiz-result-emoji').textContent = result.emoji;
+      resultBox.dataset.matchedFlavor = result.flavorId;
+    }
+
+    function applyQuizResultToBuilder() {
+      playSound('click');
+      const flavorId = document.getElementById('quiz-result-box').dataset.matchedFlavor || 'vanilla-milk';
+      
+      const flavorObj = {
+        'vanilla-milk': { nameUz: 'Qaymoqli Plombir', nameEn: 'Creamy Vanilla', price: 9000, color: '#FFF6D6' },
+        'belgian-choco': { nameUz: 'Belgiya Qora Shokoladi', nameEn: 'Belgian Chocolate', price: 11000, color: '#5C3826' },
+        'pistachio-creme': { nameUz: 'Zumrad Pista Kremi', nameEn: 'Emerald Pistachio', price: 12000, color: '#A9D39E' },
+        'wild-strawberry': { nameUz: 'O\'rmon Qulupnayi & Yogurt', nameEn: 'Wild Strawberry', price: 10000, color: '#FF7597' }
+      }[flavorId];
+
+      if (flavorObj) {
+        customIceCream.scoops = [{ id: flavorId, ...flavorObj }];
+        updateConstructorVisuals();
+      }
+
+      document.getElementById('konstruktor').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function restartQuiz() {
+      playSound('click');
+      quizCurrentIndex = 0;
+      quizTotalScore = 0;
+      document.getElementById('quiz-result-box').classList.add('hidden');
+      document.getElementById('quiz-question-box').classList.remove('hidden');
+      renderQuizQuestion();
+    }
+
+    /* =======================================================
+       8. FORMA VALITATSIYASI VA BUYURTMA (FUNCTION 5 / MODAL)
+       ======================================================= */
+    function handleOrderSubmit(e) {
+      e.preventDefault();
+
+      const nameInput = document.getElementById('order-name');
+      const phoneInput = document.getElementById('order-phone');
+      const addressInput = document.getElementById('order-address');
+      const detailsInput = document.getElementById('order-details');
+
+      const errName = document.getElementById('error-name');
+      const errPhone = document.getElementById('error-phone');
+      const errAddress = document.getElementById('error-address');
+
+      let isValid = true;
+
+      // Validate Name
+      if (nameInput.value.trim().length < 2) {
+        errName.textContent = currentLang === 'uz' ? "Iltimos, ismingizni to'liq kiriting (kamida 2 ta harf)!" : "Please enter your full name (at least 2 letters)!";
+        errName.classList.remove('hidden');
+        nameInput.classList.add('border-rose-500');
+        isValid = false;
+      } else {
+        errName.classList.add('hidden');
+        nameInput.classList.remove('border-rose-500');
+      }
+
+      // Validate Phone
+      const cleanPhone = phoneInput.value.replace(/[\s\-\(\)]/g, '');
+      if (cleanPhone.length < 9 || !/^\+?\d{9,15}$/.test(cleanPhone)) {
+        errPhone.textContent = currentLang === 'uz' ? "To'g'ri telefon raqam kiriting (masalan: +998901234567)!" : "Please enter a valid phone number (e.g., +998...)!";
+        errPhone.classList.remove('hidden');
+        phoneInput.classList.add('border-rose-500');
+        isValid = false;
+      } else {
+        errPhone.classList.add('hidden');
+        phoneInput.classList.remove('border-rose-500');
+      }
+
+      // Validate Address
+      if (addressInput.value.trim().length < 5) {
+        errAddress.textContent = currentLang === 'uz' ? "Iltimos, yetkazib berish manzilini aniq yozing!" : "Please provide a valid delivery address!";
+        errAddress.classList.remove('hidden');
+        addressInput.classList.add('border-rose-500');
+        isValid = false;
+      } else {
+        errAddress.classList.add('hidden');
+        addressInput.classList.remove('border-rose-500');
+      }
+
+      if (!isValid) {
+        playSound('click');
+        return;
+      }
+
+      // Form is valid! Play success chime and show confirmation modal
+      playSound('success');
+
+      // Random Order ID
+      const randomId = '#BM-' + Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('modal-order-id').textContent = randomId;
+      document.getElementById('modal-customer-name').textContent = nameInput.value.trim();
+      document.getElementById('modal-customer-phone').textContent = phoneInput.value.trim();
+
+      // Show Modal
+      const modal = document.getElementById('order-modal');
+      const modalContent = document.getElementById('order-modal-content');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modalContent.classList.remove('scale-95');
+        modalContent.classList.add('scale-100');
+      }, 10);
+
+      // Reset form
+      document.getElementById('order-form').reset();
+    }
+
+    function closeOrderModal() {
+      playSound('click');
+      const modal = document.getElementById('order-modal');
+      const modalContent = document.getElementById('order-modal-content');
+      modal.classList.add('opacity-0');
+      modalContent.classList.remove('scale-100');
+      modalContent.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    /* =======================================================
+       9. INITIALIZATION & LOADER (1.5s screen)
+       ======================================================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      renderCatalog();
+      updateConstructorVisuals();
+      renderQuizQuestion();
+
+      // Progress bar in loader
+      const progressBar = document.getElementById('loader-progress');
+      setTimeout(() => {
+        if (progressBar) progressBar.style.width = '100%';
+      }, 200);
+
+      // Hide Loader after 1.5s
+      setTimeout(() => {
+        const loader = document.getElementById('loader');
+        if (loader) {
+          loader.classList.add('opacity-0');
+          setTimeout(() => loader.remove(), 500);
+        }
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
