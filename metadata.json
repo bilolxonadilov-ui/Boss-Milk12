@@ -2,5 +2,7 @@
   "name": "Boss Milk — Фабрика мороженого",
   "description": "Интерактивный сайт фабрики мороженого Boss Milk: каталог с живым поиском, калькулятор-конструктор десертов, викторина вкусов, заказ с валидацией, переключение тем и языков.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
